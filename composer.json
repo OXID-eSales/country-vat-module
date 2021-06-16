@@ -1,0 +1,25 @@
+{
+  "name": "oxid-professional-services/countryvatadministration",
+  "description": "country vat administration",
+  "type": "oxideshop-module",
+  "keywords": ["oxid", "modules", "eShop"],
+  "homepage": "https://www.oxid-esales.com/en/home.html",
+  "license": [
+    "proprietary"
+  ],
+  "version": "0.0.4",
+
+  "require": {
+    "php": ">=7.0"
+  },
+  "extra": {
+    "oxideshop": {
+      "target-directory": "oxps/countryvatadministration"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "OxidProfessionalServices\\CountryVatAdministration\\": "./source/modules/oxps/countryvatadministration"
+    }
+  }
+}
