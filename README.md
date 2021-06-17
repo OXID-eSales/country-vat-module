@@ -9,7 +9,7 @@ Don't forget to save!
 If you do not want this value to apply anymore, then simply tick the "delete" box and click save. 
 
 ##Installation 
-This module requires a new table in the database: Please run the following SQL command before activating the module:
+This module requires news tables in the database: Please run the following SQL command before activating the module:
 ```SQL
 CREATE TABLE `oxps_country2vat` (
   `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
@@ -18,5 +18,27 @@ CREATE TABLE `oxps_country2vat` (
   `VAT` float DEFAULT NULL COMMENT 'Value added tax. If specified, used in all calculations instead of global vat',
   PRIMARY KEY (`OXID`),
   UNIQUE KEY `OXCOUNTRYID` (`OXCOUNTRYID`,`OXSHOPID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';
+```
+
+```SQL
+CREATE TABLE `oxpsarticle2countryvat` (
+  `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
+  `OXARTICLEID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'article id',
+  `OXCOUNTRYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'country id',
+  `OXSHOPID` int(11) NOT NULL,
+  `VAT` float DEFAULT NULL COMMENT 'Value added tax. If specified, used in all calculations instead of global vat',
+  PRIMARY KEY (`OXID`),
+  UNIQUE KEY `OXARTCOUNTRYID` (`OXARTICLEID`,`OXCOUNTRYID`,`OXSHOPID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';
+
+CREATE TABLE `oxpscategory2countryvat` (
+  `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
+  `OXCATEGORYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'category id',
+  `OXCOUNTRYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'country id',
+  `OXSHOPID` int(11) NOT NULL,
+  `VAT` float DEFAULT NULL COMMENT 'Value added tax. If specified, used in all calculations instead of global vat',
+  PRIMARY KEY (`OXID`),
+  UNIQUE KEY `OXCATCOUNTRYID` (`OXCATEGORYID`,`OXCOUNTRYID`,`OXSHOPID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';
 ```

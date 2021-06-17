@@ -8,24 +8,49 @@ $sMetadataVersion = '2.1';
 /**
  * Module information
  */
-$aModule = array(
+$aModule = [
     'id'          => 'oxps/countryvatadministration',
     'title'       => 'OXPS :: Country VAT administration',
     'description' => '',
-    'version'     => '0.0.4',
+    'version'     => '0.0.1',
     'author'      => 'OXPS',
     'url'         => '',
     'email'       => '',
-    'extend'      => array(
+    'extend'      => [
         \OxidEsales\Eshop\Application\Controller\Admin\CountryMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CountryMain::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\ArticleMain::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMain::class,
         \OxidEsales\Eshop\Application\Model\VatSelector::class => \OxidProfessionalServices\CountryVatAdministration\Model\VatSelector::class,
-    ),
-    'blocks'      => array(
-        array(
+        \OxidEsales\Eshop\Application\Model\Article::class => \OxidProfessionalServices\CountryVatAdministration\Model\Article::class,
+        \OxidEsales\Eshop\Application\Model\User::class => \OxidProfessionalServices\CountryVatAdministration\Model\User::class,
+    ],
+    'controllers' => [
+        'article_mainvat_ajax' => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\ArticleMainAjax::class,
+        'category_mainvat_ajax' => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMainAjax::class,
+    ],
+    'events'       => [
+        'onActivate'   => 'OxidProfessionalServices\CountryVatAdministration\Core\Events::onActivate',
+    ],
+    'templates' => [
+        'ajax_article_popup.tpl' => 'oxps/countryvatadministration/views/templates/ajax_article_popup.tpl',
+        'ajax_category_popup.tpl' => 'oxps/countryvatadministration/views/templates/ajax_category_popup.tpl',
+    ],
+    'blocks'      => [
+        [
             'template' => 'country_main.tpl',
             'block'    => 'admin_country_main_form',
             'file'     => 'views/blocks/admin/admin_country_main_form.tpl'
-        ),
-    ),
-    'settings'    => array(),
-);
+        ],
+        [
+            'template' => 'article_main.tpl',
+            'block'    => 'admin_article_main_form',
+            'file'     => 'views/blocks/admin/admin_article_main_form.tpl'
+        ],
+        [
+            'template' => 'include/category_main_form.tpl',
+            'block'    => 'admin_category_main_form',
+            'file'     => 'views/blocks/admin/admin_category_main_form.tpl'
+        ],
+    ],
+    'settings'    => [],
+];

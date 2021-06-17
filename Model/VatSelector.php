@@ -4,6 +4,9 @@ namespace OxidProfessionalServices\CountryVatAdministration\Model;
 
 use OxidProfessionalServices\CountryVatAdministration\Model\Country2Vat;
 
+use OxidEsales\Eshop\Application\Model\Article as EshopModelArticle;
+use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
+
 class VatSelector extends VatSelector_parent
 {
     public function getUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, $blCacheReset = false)
@@ -29,4 +32,5 @@ class VatSelector extends VatSelector_parent
 
         return parent::getUserVat($oUser, $blCacheReset);
     }
+
 }
