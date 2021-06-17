@@ -19,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "OxidProfessionalServices\\CountryVatAdministration\\": "./source/modules/oxps/countryvatadministration"
+      "OxidProfessionalServices\\CountryVatAdministration\\": "./"
     }
   }
 }
