@@ -20,7 +20,6 @@ $aModule = [
         \OxidEsales\Eshop\Application\Controller\Admin\CountryMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CountryMain::class,
         \OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\ArticleMain::class,
         \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMain::class,
-        \OxidEsales\Eshop\Application\Model\VatSelector::class => \OxidProfessionalServices\CountryVatAdministration\Model\VatSelector::class,
         \OxidEsales\Eshop\Application\Model\Article::class => \OxidProfessionalServices\CountryVatAdministration\Model\Article::class,
         \OxidEsales\Eshop\Application\Model\User::class => \OxidProfessionalServices\CountryVatAdministration\Model\User::class,
     ],

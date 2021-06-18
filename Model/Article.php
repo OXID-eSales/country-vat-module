@@ -7,6 +7,7 @@
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
 
 use OxidEsales\Eshop\Application\Model\Article as EshopModelArticle;
+use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 
 class Article extends Article_parent
 {
@@ -45,6 +46,9 @@ class Article extends Article_parent
 
         if (is_null($vat)) {
             $vat = $this->getArticleCategoryCountryVat($countryId);
+        }
+        if (is_null($vat)) {
+            $vat = $this->getCountryVat($countryId);
         }
 
         return $vat;
@@ -104,4 +108,21 @@ class Article extends Article_parent
         return $user->getVatCountry();
     }
 
+    /**
+     * get user country vat
+     *
+     * @param string $countryId
+     *
+     * @return float|null
+     */
+    protected function getCountryVat(string $countryId)
+    {
+        $countryVat = oxNew(Country2Vat::class);
+
+        if ($countryVat->loadFromCountryAndShopId($countryId, EshopRegistry::getConfig()->getShopId())) {
+            return $countryVat->vat();
+        }
+
+        return null;
+    }
 }
