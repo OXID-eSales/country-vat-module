@@ -1,15 +1,13 @@
-#Country VAT Administration
+# Country VAT Administration
 
-Allows the admin to set country specific VAT values 
+Allows the admin to set country specific VAT values for countries, categories and products.
 
-Usage: Go to Admin -> Master Settings -> Countries -> Select a country and insert the VAT (percentage) you want in the
-VAT input box (as demonstrated in the picture below)
-![img.png](img.png)
-Don't forget to save! 
-If you do not want this value to apply anymore, then simply tick the "delete" box and click save. 
+The priority of country specific VAT is product, category and country value
 
-##Installation 
-This module requires news tables in the database: Please run the following SQL command before activating the module:
+
+## Installation 
+This module requires news tables in the database whcih will be created on module activation: 
+
 ```SQL
 CREATE TABLE `oxps_country2vat` (
   `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
