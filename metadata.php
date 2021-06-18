@@ -10,11 +10,11 @@ $sMetadataVersion = '2.1';
  */
 $aModule = [
     'id'          => 'oxps/countryvatadministration',
-    'title'       => 'OXPS :: Country VAT administration',
+    'title'       => 'Country VAT administration',
     'description' => '',
-    'version'     => '0.0.1',
-    'author'      => 'OXPS',
-    'url'         => '',
+    'version'     => '1.0.0',
+    'author'      => 'OXID eSales AG',
+    'url'         => 'https://www.oxid-esales.com/',
     'email'       => '',
     'extend'      => [
         \OxidEsales\Eshop\Application\Controller\Admin\CountryMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CountryMain::class,
