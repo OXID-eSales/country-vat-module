@@ -28,6 +28,11 @@ class Category2CountryVat extends BaseModel
 
     public function loadByFirstCategoryCountry(array $categoryIds, string $countryId): bool
     {
+        if (empty($categoryIds)) {
+            //nothing to be done
+            return false;
+        }
+
         $shopId = EshopRegistry::getConfig()->getShopId();
         $db = DatabaseProvider::getDb();
 
