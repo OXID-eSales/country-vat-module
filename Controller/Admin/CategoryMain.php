@@ -19,7 +19,7 @@ class CategoryMain extends CategoryMain_parent
     {
         $fromParent = parent::render();
 
-        if (EshopRegistry::getRequest()->getRequestParameter('aoc')) {
+        if (EshopRegistry::getRequest()->getRequestParameter('cvat')) {
             $ajax = oxNew(CategoryMainAjax::class);
             $this->_aViewData['oxajax'] = $ajax->getColumns();
             return 'ajax_category_popup.tpl';
