@@ -7,7 +7,7 @@ The priority of country specific VAT is product, category and country value
 
 ## Branch Compatibility
 
-* b-6.x branch is compatible with OXID eShop compilation 6.1, 6.2 and 6.3
+* b-6.x branch / v1.x is compatible with OXID eShop compilation 6.1, 6.2 and 6.3
 
 
 ## Installation 
