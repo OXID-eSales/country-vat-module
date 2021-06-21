@@ -6,7 +6,14 @@ The priority of country specific VAT is product, category and country value
 
 
 ## Installation 
-This module requires news tables in the database whcih will be created on module activation: 
+
+```
+composer require oxid-professional-services/countryvatadministration
+```
+
+After requiring the module, you need to activate it, e.g. via OXID eShop admin.
+
+This module requires news tables in the database which will be created on module activation: 
 
 ```SQL
 CREATE TABLE `oxps_country2vat` (
@@ -40,3 +47,11 @@ CREATE TABLE `oxpscategory2countryvat` (
   UNIQUE KEY `OXCATCOUNTRYID` (`OXCATEGORYID`,`OXCOUNTRYID`,`OXSHOPID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';
 ```
+
+## How to use
+
+In Shop admin select a product or category, in the 'Main' tab you will find a button
+named 'Country Specific VAT'. Clicking the utton opens a popup which allows you to assign
+VAT per country for this product or category.
+
+![Image alt](./assign-vat.png)
