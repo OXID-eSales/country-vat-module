@@ -11,3 +11,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Resolved conflict with other assignment overlays   
 - Country VAT assignment only for existing categories and products possible
 - It is possible to assign all countries at once now
+
+[1.0.1]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.0...v1.0.1
