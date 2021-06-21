@@ -34,7 +34,7 @@ class Category2CountryVat extends BaseModel
         }
 
         $shopId = EshopRegistry::getConfig()->getShopId();
-        $db = DatabaseProvider::getDb();
+        $db = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
 
         $tmp = [];
         foreach ($categoryIds as $id) {
@@ -42,10 +42,11 @@ class Category2CountryVat extends BaseModel
         }
         $queryPart = implode(',', $tmp);
 
-        $query =  'SELECT OXID FROM ' . $this->getCoreTableName() .
+        $query =  'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
                   ' WHERE OXCATEGORYID IN (' . $queryPart . ')' .
                   ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
-                  ' AND   OXSHOPID=' . $db->quote($shopId);
+                  ' AND   OXSHOPID=' . $db->quote($shopId) .
+                  ' ORDER BY FIELD (OXCATEGORYID, ' . $queryPart . ')';
 
         $oxid = (string) $db->getOne($query);
 
