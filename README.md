@@ -5,6 +5,11 @@ Allows the admin to set country specific VAT values for countries, categories an
 The priority of country specific VAT is product, category and country value
 
 
+## Branch Compatibility
+
+* b-6.x branch is compatible with OXID eShop compilation 6.1, 6.2 and 6.3
+
+
 ## Installation 
 
 ```
@@ -50,8 +55,13 @@ CREATE TABLE `oxpscategory2countryvat` (
 
 ## How to use
 
-In Shop admin select a product or category, in the 'Main' tab you will find a button
-named 'Country Specific VAT'. Clicking the utton opens a popup which allows you to assign
+In shop admin select a product or category, in the 'Main' tab you will find a button
+named 'Country Specific VAT'. Clicking the button opens a popup which allows you to assign
 VAT per country for this product or category.
 
 ![Image alt](./assign-vat.png)
+
+In shop admin got to `Master Settings -> Countries`, select a country and set the country specific vat in 
+the input field and click save. 
+
+![Image alt](./assign-country-vat.png)
