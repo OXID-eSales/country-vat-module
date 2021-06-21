@@ -46,7 +46,7 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
                      " where {$sO2AViewName}.oxarticleid = " . $oDb->quote($sArtId) . " " .
                      " and {$sAttrViewName}.oxactive = " . $oDb->quote(1) . " ";
         } else {
-            $sQAdd = " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxarticleid " .
+            $sQAdd = " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxcountryid " .
                      "from {$sO2AViewName} left join {$sAttrViewName} " .
                      "on {$sAttrViewName}.oxid={$sO2AViewName}.oxcountryid " .
                      " where {$sO2AViewName}.oxarticleid = " . $oDb->quote($sSynchArtId) . " ) " .

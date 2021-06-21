@@ -46,7 +46,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                      " where {$sO2AViewName}.oxcategoryid = " . $oDb->quote($sArtId) . " " .
                      " and {$sAttrViewName}.oxactive = " . $oDb->quote(1) . " ";
         } else {
-            $sQAdd = " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxcategoryid " .
+            $sQAdd = " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxcountryid " .
                      "from {$sO2AViewName} left join {$sAttrViewName} " .
                      "on {$sAttrViewName}.oxid={$sO2AViewName}.oxcountryid " .
                      " where {$sO2AViewName}.oxcategoryid = " . $oDb->quote($sSynchArtId) . " ) " .
