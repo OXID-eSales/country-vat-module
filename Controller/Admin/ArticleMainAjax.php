@@ -83,7 +83,7 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sAttrViewName = $this->_getViewName('oxpsarticle2countryvat');
+            $sAttrViewName = $this->_getViewName('oxcountry');
             $aAddCat = $this->_getAll($this->_addFilter("select $sAttrViewName.oxid " . $this->_getQuery()));
         }
 
