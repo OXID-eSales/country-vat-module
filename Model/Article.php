@@ -19,11 +19,9 @@ class Article extends Article_parent
      */
     public function getCustomVAT()
     {
-        if (!isAdmin()) {
-            $vat = $this->getArticleUserCountryVat();
-            if (is_numeric($vat)) {
-                return $vat;
-            }
+        $vat = $this->getArticleUserCountryVat();
+        if (is_numeric($vat)) {
+            return $vat;
         }
 
         return parent::getCustomVAT();
