@@ -80,7 +80,7 @@ class Article extends Article_parent
     public function getArticleCountryVat(string $countryId)
     {
         $articleVatRelation = oxNew(Product2CountryVat::class);
-        $loaded = $articleVatRelation->loadByProductCountry($this->getId(), $countryId);
+        $loaded = $articleVatRelation->loadByProductCountry((string) $this->getId(), $countryId);
 
         //TODO: check if this can be fetched in one go
         //if we failed to find something, we might have a variant so check the parent
