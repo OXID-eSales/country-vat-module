@@ -7,7 +7,9 @@ The priority of country specific VAT is product, category and country value
 
 ## Branch Compatibility
 
-* b-6.x branch / v1.x is compatible with OXID eShop compilation 6.1, 6.2 and 6.3 (6.0 with higher php versions may work as well, but module is not tested with it, so we cannot guarantee)
+* b-6.x branch / v1.x is compatible with
+  * OXID eShop compilation 6.1, 6.2 and 6.3 (6.0 with higher php versions may work as well, but module is not tested with it, so we cannot guarantee)
+  * OXID eShop b-6.4.x branch with PHP 7.4 and 8.0
 
 
 ## Installation 
