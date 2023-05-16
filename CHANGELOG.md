@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.4] - Unreleased
+
+### Changed
+- License updated - now using OXID Module and Component License
+
 ## [1.0.3] - 2021-07-21
 
 ### Fixed
@@ -22,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Country VAT assignment only for existing categories and products possible
 - It is possible to assign all countries at once now
 
+[1.0.4]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.4...b-6.x
 [1.0.3]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.0...v1.0.1
