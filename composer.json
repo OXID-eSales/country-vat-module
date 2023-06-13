@@ -1,5 +1,5 @@
 {
-  "name": "oxid-professional-services/countryvatadministration",
+  "name": "oxid-esales/country-vat-module",
   "description": "country vat administration",
   "type": "oxideshop-module",
   "keywords": ["oxid", "modules", "eShop"],
@@ -10,11 +10,6 @@
   "version": "1.0.3",
   "require": {
     "php": ">=7.0"
-  },
-  "extra": {
-    "oxideshop": {
-      "target-directory": "oxps/countryvatadministration"
-    }
   },
   "autoload": {
     "psr-4": {

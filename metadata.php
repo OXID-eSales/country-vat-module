@@ -9,7 +9,7 @@ $sMetadataVersion = '2.1';
  * Module information
  */
 $aModule = [
-    'id'          => 'oxps/countryvatadministration',
+    'id'          => 'oecountryvat',
     'title'       => 'Country VAT administration',
     'description' => '',
     'version'     => '1.0.3',

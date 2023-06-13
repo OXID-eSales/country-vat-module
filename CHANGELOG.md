@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.0] - Unreleased
+
+### Changed
+- Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
+
 ## [1.0.4] - Unreleased
 
 ### Changed
