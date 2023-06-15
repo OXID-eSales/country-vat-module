@@ -8,7 +8,7 @@ namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 
-class ArticleMain extends ArticleMain_parent
+class CategoryMain extends CategoryMain_parent
 {
     /**
      * Render method.
@@ -20,9 +20,9 @@ class ArticleMain extends ArticleMain_parent
         $fromParent = parent::render();
 
         if (EshopRegistry::getRequest()->getRequestParameter('cvat')) {
-            $ajax = oxNew(ArticleMainAjax::class);
+            $ajax = oxNew(CategoryMainAjax::class);
             $this->_aViewData['oxajax'] = $ajax->getColumns();
-            return 'ajax_article_popup.tpl';
+            return '@oecountryvat/templates/ajax_category_popup';
         }
         return $fromParent;
     }
