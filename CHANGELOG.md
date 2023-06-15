@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [2.0.0] - Unreleased
 
+### Added
+- Migrations directory configured, queries from activation events moved to migrations
+
 ### Changed
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
 
