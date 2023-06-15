@@ -1,4 +1,5 @@
 [{$smarty.block.parent}]
+
 [{if $oxid != "-1"}]
 <tr>
     <td class="edittext">
