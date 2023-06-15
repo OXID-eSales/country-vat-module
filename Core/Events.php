@@ -6,6 +6,9 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Core;
 
+use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use Symfony\Component\Console\Output\BufferedOutput;
+
 class Events
 {
     /**
@@ -13,45 +16,23 @@ class Events
      */
     public static function onActivate()
     {
-        $dbMetaDataHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
+        // execute module migrations
+        self::executeModuleMigrations();
+    }
 
-        if (!$dbMetaDataHandler->tableExists("oxps_country2vat")) {
+    /**
+     * Execute necessary module migrations on activate event
+     */
+    private static function executeModuleMigrations(): void
+    {
+        $migrations = (new MigrationsBuilder())->build();
 
-            $query = "CREATE TABLE `oxps_country2vat` (
-                      `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
-                      `OXCOUNTRYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'country id',
-                      `OXSHOPID` int(11) NOT NULL,
-                      `VAT` float DEFAULT NULL COMMENT 'Value added tax. If specified, used in all calculations instead of global vat',
-                      PRIMARY KEY (`OXID`),
-                      UNIQUE KEY `OXCOUNTRYID` (`OXCOUNTRYID`,`OXSHOPID`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
-        }
+        $output = new BufferedOutput();
+        $migrations->setOutput($output);
+        $neeedsUpdate = $migrations->execute('migrations:up-to-date', 'oecountryvat');
 
-        if (!$dbMetaDataHandler->tableExists("oxpsarticle2countryvat")) {
-            $query = "CREATE TABLE `oxpsarticle2countryvat` (
-                      `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
-                      `OXARTICLEID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'article id',
-                      `OXCOUNTRYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'country id',
-                      `OXSHOPID` int(11) NOT NULL,
-                      `VAT` float DEFAULT NULL COMMENT 'Value added tax. If specified, used in all calculations instead of global vat',
-                      PRIMARY KEY (`OXID`),
-                      UNIQUE KEY `OXARTCOUNTRYID` (`OXARTICLEID`,`OXCOUNTRYID`,`OXSHOPID`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
-        }
-
-        if (!$dbMetaDataHandler->tableExists("oxpscategory2countryvat")) {
-            $query = "CREATE TABLE `oxpscategory2countryvat` (
-                      `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
-                      `OXCATEGORYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'category id',
-                      `OXCOUNTRYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'country id',
-                      `OXSHOPID` int(11) NOT NULL,
-                      `VAT` float DEFAULT NULL COMMENT 'Value added tax. If specified, used in all calculations instead of global vat',
-                      PRIMARY KEY (`OXID`),
-                      UNIQUE KEY `OXCATCOUNTRYID` (`OXCATEGORYID`,`OXCOUNTRYID`,`OXSHOPID`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
+        if ($neeedsUpdate) {
+            $migrations->execute('migrations:migrate', 'oecountryvat');
         }
     }
 }

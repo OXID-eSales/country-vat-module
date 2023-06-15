@@ -1,0 +1,4 @@
+table_storage:
+  table_name: oxmigrations_countryvat
+migrations_paths:
+  'OxidEsales\CountryVatAdministration\Migrations': data
