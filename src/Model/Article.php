@@ -6,7 +6,6 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
 
-use OxidEsales\Eshop\Application\Model\Article as EshopModelArticle;
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 
 class Article extends Article_parent
