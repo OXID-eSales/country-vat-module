@@ -6,9 +6,14 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
 use OxidProfessionalServices\CountryVatAdministration\Model\Category2CountryVat;
+use OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax;
 
-class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
+class CategoryMainAjax extends ListComponentAjax
 {
     /**
      * Columns array
@@ -32,14 +37,14 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function getQuery()
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $oDb = DatabaseProvider::getDb();
+        $sArtId = Registry::getRequest()->getRequestParameter('oxid');
+        $sSynchArtId = Registry::getRequest()->getRequestParameter('synchoxid');
 
-        $sAttrViewName = $this->_getViewName('oxcountry');
-        $sO2AViewName = $this->_getViewName('oxpscategory2countryvat');
+        $sAttrViewName = $this->getViewName('oxcountry');
+        $sO2AViewName = $this->getViewName('oxpscategory2countryvat');
         if ($sArtId) {
             $sQAdd = " from {$sO2AViewName} left join {$sAttrViewName} " .
                      "on {$sAttrViewName}.oxid={$sO2AViewName}.oxcountryid " .
@@ -61,16 +66,15 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     public function removeAttr()
     {
-        $aChosenArt = $this->_getActionIds('oxpscategory2countryvat.oxid');
-        $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sO2AViewName = $this->_getViewName('oxpscategory2countryvat');
-            $sQ = $this->_addFilter("delete $sO2AViewName.* " . $this->_getQuery());
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
+        $aChosenArt = $this->getActionIds('oxpscategory2countryvat.oxid');
+        if (Registry::getRequest()->getRequestParameter('all')) {
+            $sO2AViewName = $this->getViewName('oxpscategory2countryvat');
+            $sQ = $this->addFilter("delete $sO2AViewName.* " . $this->getQuery());
+            DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxpscategory2countryvat where oxpscategory2countryvat.oxid in ({$sChosenArticles}) ";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
+            DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -79,19 +83,19 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     public function addAttr()
     {
-        $aAddCat = $this->_getActionIds('oxcountry.oxid');
-        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $aAddCat = $this->getActionIds('oxcountry.oxid');
+        $soxId = Registry::getRequest()->getRequestParameter('synchoxid');
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sAttrViewName = $this->_getViewName('oxcountry');
-            $aAddCat = $this->_getAll($this->_addFilter("select $sAttrViewName.oxid " . $this->_getQuery()));
+        if (Registry::getRequest()->getRequestParameter('all')) {
+            $sAttrViewName = $this->getViewName('oxcountry');
+            $aAddCat = $this->getAll($this->addFilter("select $sAttrViewName.oxid " . $this->getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddCat)) {
             foreach ($aAddCat as $sAdd) {
                 $oNew = oxNew(Category2CountryVat::class);
-                $oNew->oxpscategory2countryvat__oxcategoryid = new \OxidEsales\Eshop\Core\Field($soxId);
-                $oNew->oxpscategory2countryvat__oxcountryid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNew->oxpscategory2countryvat__oxcategoryid = new Field($soxId);
+                $oNew->oxpscategory2countryvat__oxcountryid = new Field($sAdd);
                 $oNew->save();
             }
         }
@@ -104,23 +108,26 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     public function saveAttributeValue()
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $database = DatabaseProvider::getDb();
+        $request = Registry::getRequest();
         $this->resetContentCache();
 
-        $categoryId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
-        $countryId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("attr_oxid");
-        $vatValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("attr_value");
+        $categoryId = $request->getRequestParameter("oxid");
+        $countryId = $request->getRequestParameter("attr_oxid");
+        $vatValue = $request->getRequestParameter("attr_value");
 
-        $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $category = oxNew(Category::class);
         if ($category->load($categoryId)) {
             if (isset($vatValue) && ("" != $vatValue)) {
-                $viewName = $this->_getViewName("oxpscategory2countryvat");
+                $viewName = $this->getViewName("oxpscategory2countryvat");
                 $quotedCategoryId = $database->quote($category->oxcategories__oxid->value);
                 $select = "select * from {$viewName} where {$viewName}.oxcategoryid= {$quotedCategoryId} and
                             {$viewName}.oxcountryid= " . $database->quote($countryId);
+                $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($select);
 
                 $objectToAttribute = oxNew(Category2CountryVat::class);
-                if ($objectToAttribute->assignRecord($select)) {
+                if ($record && $record->count() > 0) {
+                    $objectToAttribute->assign($record->fields);
                     $objectToAttribute->oxpscategory2countryvat__vat->setValue($vatValue);
                     $objectToAttribute->save();
                 }

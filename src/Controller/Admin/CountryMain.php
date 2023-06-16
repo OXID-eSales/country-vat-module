@@ -1,20 +1,24 @@
 <?php
-
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
 
 namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidProfessionalServices\CountryVatAdministration\Model\Country2Vat;
 
 class CountryMain extends CountryMain_parent
 {
     public function save()
     {
-        $params = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $params = Registry::getRequest()->getRequestParameter("editval");
         $noProblemsWithCountryVatUpdate = true;
         if (key_exists('oxps_countryvatadministration_country_vat', $params)) {
             $countryToVat = oxNew(Country2Vat::class);
             $oxcountryId = $this->getEditObjectId();
-            $shopId = (int) $this->getConfig()->getShopId();
+            $shopId = (int) Registry::getConfig()->getShopId();
             $countryToVat->loadFromCountryAndShopId($oxcountryId, $shopId);
             $deleteVatConfiguration = (bool) (trim($params['oxps_countryvatadministration_country_vat']) == '');
 
@@ -34,7 +38,7 @@ class CountryMain extends CountryMain_parent
     {
         $countryToVat = oxNew(Country2Vat::class);
         $oxcountryId = $this->getEditObjectId();
-        $shopId = (int) $this->getConfig()->getShopId();
+        $shopId = (int) Registry::getConfig()->getShopId();
         $countryToVat->loadFromCountryAndShopId($oxcountryId, $shopId);
         return $countryToVat->vat();
     }

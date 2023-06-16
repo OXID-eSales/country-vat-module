@@ -22,7 +22,7 @@ class CategoryMain extends CategoryMain_parent
         if (EshopRegistry::getRequest()->getRequestParameter('cvat')) {
             $ajax = oxNew(CategoryMainAjax::class);
             $this->_aViewData['oxajax'] = $ajax->getColumns();
-            return 'ajax_category_popup.tpl';
+            return '@oecountryvat/templates/ajax_category_popup';
         }
         return $fromParent;
     }

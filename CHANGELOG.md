@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
+- Moved all php code to `src` directory
 
 ## [1.0.4] - Unreleased
 

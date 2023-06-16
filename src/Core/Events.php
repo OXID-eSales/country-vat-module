@@ -14,7 +14,7 @@ class Events
     /**
      * Execute action on activate event
      */
-    public static function onActivate()
+    public static function onActivate(): void
     {
         // execute module migrations
         self::executeModuleMigrations();
