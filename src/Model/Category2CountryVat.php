@@ -67,7 +67,7 @@ class Category2CountryVat extends BaseModel
      */
     public function getFieldData($fieldName)
     {
-        $longFieldName = $this->_getFieldLongName($fieldName);
+        $longFieldName = $this->getFieldLongName($fieldName);
 
         return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->value : null;
     }
