@@ -58,8 +58,8 @@ on:
 env:
   PACKAGE_NAME: 'oxid-esales/country-vat-module'
   MODULE_ID: 'oecountryvat'
-#  SONARCLOUD_ORGANIZATION: 'oxid-esales'
-#  SONARCLOUD_PROJECT_KEY: 'OXID-eSales_module-country-vat'
+  SONARCLOUD_ORGANIZATION: 'oxid-esales'
+  SONARCLOUD_PROJECT_KEY: 'OXID-eSales_country-vat-module'
 
 jobs:
   install_shop_with_module:
@@ -384,3 +384,87 @@ jobs:
         run: |
           make down
           sleep 2
+
+  prepare_coverage_results:
+    needs: [ unit_tests, integration_tests ]
+    if: ${{ always() && inputs.report_sonarcloud }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./*
+          key: installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
+          restore-keys: |
+            installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
+            installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}
+
+      - name: Download unit artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ModuleUnitTestsLog-${{ inputs.php }}-${{ inputs.mysql }}-${{ inputs.template_engine }}
+          path: ./source/coverage/
+
+      - name: Download integration artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ModuleIntegrationTestsLog-${{ inputs.php }}-${{ inputs.mysql }}-${{ inputs.template_engine }}
+          path: ./source/coverage/
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Collect and merge coverage reports
+        continue-on-error: true
+        run: |
+          ls -alh source/coverage
+          wget https://phar.phpunit.de/phpcov-8.2.1.phar
+          mv phpcov-8.2.1.phar source/phpcov.phar
+          docker-compose exec -T php php phpcov.phar merge --clover coverage.xml ./coverage
+          perl -pi -e 's#/var/www/test-module/#./#g;' source/coverage.xml
+
+      - name: Upload log artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: TestsLog-${{ inputs.php }}-${{ inputs.mysql }}
+          path: source/coverage.xml
+
+      - name: Stop containers
+        if: always()
+        run: |
+          make down
+          sleep 2
+
+  sonarcloud:
+    needs: [ prepare_coverage_results ]
+    if: ${{ always() && inputs.report_sonarcloud }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current module
+        uses: actions/checkout@v3
+
+      - name: Download TestsLog artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v3
+        with:
+          name: TestsLog-${{ inputs.php }}-${{ inputs.mysql }}
+          path: ./tests/
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=${{ env.SONARCLOUD_ORGANIZATION }}
+            -Dsonar.projectKey=${{ env.SONARCLOUD_PROJECT_KEY }}
+            -Dsonar.sources=src
+            -Dsonar.tests=tests
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.php.coverage.reportPaths=tests/coverage.xml
+            -Dsonar.cpd.php.minimumTokens=25
+            -Dsonar.cpd.php.minimumLines=5
