@@ -223,6 +223,7 @@ jobs:
       - name: Load current installation from cache
         uses: actions/cache@v3
         with:
+          fail-on-cache-miss: true
           path: |
             ./*
           key: installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
@@ -337,6 +338,7 @@ jobs:
       - name: Load current installation from cache
         uses: actions/cache@v3
         with:
+          fail-on-cache-miss: true
           path: |
             ./*
           key: installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
@@ -393,6 +395,7 @@ jobs:
       - name: Load current installation from cache
         uses: actions/cache@v3
         with:
+          fail-on-cache-miss: true
           path: |
             ./*
           key: installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
@@ -468,3 +471,32 @@ jobs:
             -Dsonar.php.coverage.reportPaths=tests/coverage.xml
             -Dsonar.cpd.php.minimumTokens=25
             -Dsonar.cpd.php.minimumLines=5
+
+  notify_slack:
+    needs: [ unit_tests, integration_tests, codeception_twig, codeception_smarty ]
+    runs-on: ubuntu-latest
+    if: ${{ always() && inputs.report_slack }}
+    steps:
+      - name: Send custom JSON data to Slack workflow
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: >
+            { "text": "
+            ${{ github.event_name == 'workflow_dispatch' && 'Manual run of' || 'Scheduled run of' }} ${{ github.workflow }} on ${{ github.repository }} by ${{ github.actor }}
+            ${{ (needs.unit_tests.result=='success' && needs.integration_tests.result=='success') && 'Successful' || 'Failed' }}
+            ", "blocks": [ { "type": "header","text": { "type": "plain_text", "emoji": true, "text": "
+            ${{ github.event_name == 'workflow_dispatch' && 'Manual run of' || 'Scheduled' }} ${{ github.workflow }} on ${{ github.repository }} by ${{ github.actor }}
+            " } },{ "type": "section","fields": [ { "type": "mrkdwn","text": "
+            *Status:* ${{ (needs.unit_tests.result=='success' && needs.integration_tests.result=='success') && ':white_check_mark:' || ':x:' }}
+            " },{ "type": "mrkdwn","text": "
+            Repository: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.repository }}/actions/runs/${{ github.run_id }}>
+            " } ] },{ "type": "section", "text": { "type": "mrkdwn", "text": "
+            \n* Module Unit ${{ (needs.unit_tests.result=='success') && ':white_check_mark:' || ':x:' }}
+            \n* Module Integration ${{ (needs.integration_tests.result=='success') && ':white_check_mark:' || ':x:' }}
+            \n* Module Codeception with Smarty ${{ ((inputs.template_engine=='smarty' && needs.codeception_smarty.result=='success') || (inputs.template_engine=='both' && needs.codeception_smarty.result=='success')) && ':white_check_mark:' || ':x:' }}
+            \n* Module Codeception with Twig ${{ ((inputs.template_engine=='twig-apex' && needs.codeception_twig.result=='success') || (inputs.template_engine=='both' && needs.codeception_twig.result=='success')) && ':white_check_mark:' || ':x:' }}
+            " } }, { "type": "divider" } ] }
+
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
