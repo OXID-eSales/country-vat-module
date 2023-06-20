@@ -54,6 +54,11 @@ on:
         required: true
         default: 'oecountryvat'
         type: string
+      report_sonarcloud:
+        description: 'Trigger sonarcloud analize?'
+        required: true
+        default: true
+        type: boolean
 
 env:
   PACKAGE_NAME: 'oxid-esales/country-vat-module'
