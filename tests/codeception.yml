@@ -1,0 +1,22 @@
+namespace: OxidProfessionalServices\CountryVatAdministration\Tests\Codeception
+
+params:
+    - Codeception/Config/params.php
+
+paths:
+    tests: Codeception
+    output: Codeception/_output
+    data: Codeception/_data
+    support: Codeception/_support
+    envs: Codeception/_envs
+
+actor_suffix: Tester
+
+settings:
+    colors: true
+    log: true
+    shuffle: false
+
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
