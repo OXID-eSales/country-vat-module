@@ -10,10 +10,13 @@ namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use PHPUnit\Framework\TestCase;
 
 abstract class BaseTestCase extends TestCase
 {
+    use DatabaseTrait;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -29,5 +32,11 @@ abstract class BaseTestCase extends TestCase
                 __DIR__ . '/../Fixtures/dump.sql'
             )
         );
+    }
+
+    public function tearDown(): void
+    {
+        $this->setupShopDatabase();
+        parent::tearDown();
     }
 }
