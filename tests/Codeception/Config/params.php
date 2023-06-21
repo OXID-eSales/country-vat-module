@@ -9,6 +9,7 @@ namespace OxidEsales\DoctrineMigrationWrapper;
 use OxidEsales\Facts\Facts;
 use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Codeception\Module\Database\DatabaseDefaultsFileGenerator;
+use Symfony\Component\Filesystem\Path;
 
 $facts = new Facts();
 
@@ -26,6 +27,7 @@ return [
     'DB_HOST' => $facts->getDatabaseHost(),
     'DB_PORT' => $facts->getDatabasePort(),
     'DUMP_PATH' => getTestDataDumpFilePath(),
+    'MODULE_DUMP_PATH' => getModuleTestDataDumpFilePath(),
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
     'FIXTURES_PATH' => getTestFixtureSqlFilePath(),
     'SELENIUM_SERVER_PORT' => $selenium_server_port,
@@ -37,12 +39,17 @@ return [
 
 function getTestDataDumpFilePath(): string
 {
-    return getShopTestPath() . '/Codeception/_data/generated/shop-dump.sql';
+    return Path::join(__DIR__, '/../', '_data', 'generated', 'dump.sql');
 }
 
 function getTestFixtureSqlFilePath(): string
 {
     return getShopTestPath() . '/Codeception/_data/dump.sql';
+}
+
+function getModuleTestDataDumpFilePath()
+{
+    return Path::join(__DIR__, '/../', '_data', 'dump.sql');
 }
 
 function getShopSuitePath($facts)

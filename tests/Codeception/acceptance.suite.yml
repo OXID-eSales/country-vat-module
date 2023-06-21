@@ -23,16 +23,20 @@ modules:
         - \OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'
+            license: '%license_key%'
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
             user: '%DB_USERNAME%'
             password: '%DB_PASSWORD%'
             port: '%DB_PORT%'
             dump: '%DUMP_PATH%'
+            module_dump: '%MODULE_DUMP_PATH%'
             mysql_config: '%MYSQL_CONFIG_PATH%'
             populate: true # run populator before all tests
             cleanup: true # run populator before each test
-            populator: 'mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
+            populator: >
+                mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump
+                && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $module_dump
             initial_queries:
                 - 'SET @@SESSION.sql_mode=""'
         - \OxidEsales\Codeception\Module\Oxideshop:

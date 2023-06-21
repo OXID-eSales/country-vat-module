@@ -15,8 +15,9 @@ use OxidEsales\Codeception\Step\Basket;
 
 final class UpdateVatAdminCest
 {
+    private string $countryVatSelector = "//div[@id='container2_c']/table//td//*[contains(text(), '%s')]";
     private string $countryVatInput = '#oxps_countryvatadministration_country_vat';
-    private string $vatCell = 'td[@class="vatPercent"]';
+    private string $vatCell = '//td[@class="vatPercent"]';
     private string $languageSelect = "//select[@name='changelang']";
     private string $specificVatButton = "//input[@value='Country Specific VAT']";
     private string $categoryVatInput = "#attr_value";
@@ -50,7 +51,7 @@ final class UpdateVatAdminCest
         $categoryList = $adminPage->openCategories();
         $this->switchLanguage($I, Fixtures::get('language'));
         $categoryList->selectCategory(Fixtures::get('category'));
-        $I->wait(60);
+
         $I->selectEditFrame();
         $I->click($this->specificVatButton);
         $I->switchToNextTab();//codeception way of opening next window
@@ -58,8 +59,7 @@ final class UpdateVatAdminCest
         $I->click(Translator::translate('GENERAL_AJAX_ASSIGNALL'));
         $I->waitForAjax(10);
 
-        $I->click('Germany');
-        $I->see($this->categoryVatInput);
+        $I->click(sprintf($this->countryVatSelector, 'Germany'));
         $I->fillField($this->categoryVatInput, '15');
         $I->click(Translator::translate('GENERAL_SAVE'));
         $I->closeTab();
@@ -87,8 +87,7 @@ final class UpdateVatAdminCest
         $I->click(Translator::translate('GENERAL_AJAX_ASSIGNALL'));
         $I->waitForAjax(10);
 
-        $I->click('Germany');
-        $I->see($this->categoryVatInput);
+        $I->click(sprintf($this->countryVatSelector, 'Germany'));
         $I->fillField($this->categoryVatInput, '18');
         $I->click(Translator::translate('GENERAL_SAVE'));
         $I->closeTab();
