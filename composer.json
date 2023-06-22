@@ -26,8 +26,8 @@
   },
   "autoload": {
     "psr-4": {
-      "OxidProfessionalServices\\CountryVatAdministration\\": "src/",
-      "OxidProfessionalServices\\CountryVatAdministration\\Tests\\": "tests/"
+      "OxidEsales\\CountryVat\\": "src/",
+      "OxidEsales\\CountryVat\\Tests\\": "tests/"
     }
   },
   "scripts": {

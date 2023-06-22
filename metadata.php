@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-use OxidProfessionalServices\CountryVatAdministration\Core\Module;
+use OxidEsales\CountryVat\Core\Module;
 
 /**
  * Metadata version
@@ -23,18 +23,18 @@ $aModule = [
     'url'         => 'https://www.oxid-esales.com/',
     'email'       => '',
     'extend'      => [
-        \OxidEsales\Eshop\Application\Controller\Admin\CountryMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CountryMain::class,
-        \OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\ArticleMain::class,
-        \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain::class => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMain::class,
-        \OxidEsales\Eshop\Application\Model\Article::class => \OxidProfessionalServices\CountryVatAdministration\Model\Article::class,
-        \OxidEsales\Eshop\Application\Model\User::class => \OxidProfessionalServices\CountryVatAdministration\Model\User::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\CountryMain::class => \OxidEsales\CountryVat\Controller\Admin\CountryMain::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class => \OxidEsales\CountryVat\Controller\Admin\ArticleMain::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain::class => \OxidEsales\CountryVat\Controller\Admin\CategoryMain::class,
+        \OxidEsales\Eshop\Application\Model\Article::class => \OxidEsales\CountryVat\Model\Article::class,
+        \OxidEsales\Eshop\Application\Model\User::class => \OxidEsales\CountryVat\Model\User::class,
     ],
     'controllers' => [
-        'article_mainvat_ajax' => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\ArticleMainAjax::class,
-        'category_mainvat_ajax' => \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMainAjax::class,
+        'article_mainvat_ajax' => \OxidEsales\CountryVat\Controller\Admin\ArticleMainAjax::class,
+        'category_mainvat_ajax' => \OxidEsales\CountryVat\Controller\Admin\CategoryMainAjax::class,
     ],
     'events'       => [
-        'onActivate'   => '\OxidProfessionalServices\CountryVatAdministration\Core\Events::onActivate',
+        'onActivate'   => '\OxidEsales\CountryVat\Core\Events::onActivate',
     ],
     'templates' => [
         '@oecountryvat/admin/ajax_article_popup.tpl' => 'views/smarty/admin/ajax_article_popup.tpl',

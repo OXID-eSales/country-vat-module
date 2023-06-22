@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidProfessionalServices\CountryVatAdministration\Core;
+namespace OxidEsales\CountryVat\Core;
 
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use Symfony\Component\Console\Output\BufferedOutput;
