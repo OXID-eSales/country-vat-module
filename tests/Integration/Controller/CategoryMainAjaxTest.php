@@ -6,36 +6,32 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration\Controller;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMainAjax;
 use OxidProfessionalServices\CountryVatAdministration\Model\Article;
 use OxidProfessionalServices\CountryVatAdministration\Model\Category2CountryVat;
-use OxidProfessionalServices\CountryVatAdministration\Model\Country2Vat;
 use OxidProfessionalServices\CountryVatAdministration\Model\User;
 use OxidProfessionalServices\CountryVatAdministration\Tests\Integration\BaseTestCase;
-use PHPUnit\Framework\TestCase;
 
 class CategoryMainAjaxTest extends BaseTestCase
 {
     public function testAssignCountryToCategoryWithSpecialVat()
     {
-        $_POST['oxid'] = 'testcategory0';
-        $_POST['attr_oxid'] = 'testcountry_de';
+        $_POST['oxid'] = self::CATEGORY_ID;
+        $_POST['attr_oxid'] = self::COUNTRY_ID_DE;
         $_POST['attr_value'] = '9';
-        $_POST['synchoxid'] = 'testcategory0';
+        $_POST['synchoxid'] = self::CATEGORY_ID;
         $_POST['cmpid'] = 'container1';
-        $_POST['_1'] = ['testcountry_be', 'testcountry_de'];
+        $_POST['_1'] = [self::COUNTRY_ID_BE, self::COUNTRY_ID_DE];
 
         $ajax = oxNew(CategoryMainAjax::class);
         $ajax->addAttr();
         $ajax->saveAttributeValue();
 
         $userModel = oxNew(User::class);
-        $userModel->load('germanuser');
+        $userModel->load(self::USER_ID_DE);
 
         $articleModel = oxNew(Article::class);
-        $articleModel->load('1000');
+        $articleModel->load(self::ARTICLE_ID);
         $articleModel->setArticleUser($userModel);
 
         $this->assertSame('9', $articleModel->getCustomVAT());
@@ -43,24 +39,24 @@ class CategoryMainAjaxTest extends BaseTestCase
 
     public function testUnassignCountryFromCategory()
     {
-        $_POST['synchoxid'] = 'testcategory0';
+        $_POST['synchoxid'] = self::CATEGORY_ID;
         $_POST['cmpid'] = 'container1';
-        $_POST['_1'] = ['testcountry_be', 'testcountry_de'];
+        $_POST['_1'] = [self::COUNTRY_ID_BE, self::COUNTRY_ID_DE];
 
         $ajax = oxNew(CategoryMainAjax::class);
         $ajax->addAttr();
 
         $category2Country = oxNew(Category2CountryVat::class);
-        $this->assertTrue($category2Country->loadByFirstCategoryCountry(['testcategory0'], 'testcountry_de'));
+        $this->assertTrue($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_DE));
         $deCat2CountryId = $category2Country->getId();
-        $this->assertTrue($category2Country->loadByFirstCategoryCountry(['testcategory0'], 'testcountry_be'));
+        $this->assertTrue($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_BE));
         $beCat2CountryId = $category2Country->getId();
 
         $_POST['cmpid'] = 'container2';
         $_POST['_1'] = [$deCat2CountryId, $beCat2CountryId];
         $ajax->removeAttr();
 
-        $this->assertFalse($category2Country->loadByFirstCategoryCountry(['testcategory0'], 'testcountry_de'));
-        $this->assertFalse($category2Country->loadByFirstCategoryCountry(['testcategory0'], 'testcountry_be'));
+        $this->assertFalse($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_DE));
+        $this->assertFalse($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_BE));
     }
 }

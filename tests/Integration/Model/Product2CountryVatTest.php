@@ -1,0 +1,109 @@
+<?php
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration\Controller;
+
+use OxidEsales\Eshop\Core\Field;
+use OxidProfessionalServices\CountryVatAdministration\Model\Article;
+use OxidProfessionalServices\CountryVatAdministration\Model\Category2CountryVat;
+use OxidProfessionalServices\CountryVatAdministration\Model\Country2Vat;
+use OxidProfessionalServices\CountryVatAdministration\Model\Product2CountryVat;
+use OxidProfessionalServices\CountryVatAdministration\Model\User;
+use OxidProfessionalServices\CountryVatAdministration\Tests\Integration\BaseTestCase;
+
+class Product2CountryVatTest extends BaseTestCase
+{
+    public function testGetArticleVatForUsersFromDifferentCountries()
+    {
+        $this->setArticleToCountryVat(self::ARTICLE_ID, self::COUNTRY_ID_DE, 10);
+        $this->setArticleToCountryVat(self::ARTICLE_ID, self::COUNTRY_ID_BE, 15);
+
+        $userDe = oxNew(User::class);
+        $userDe->load(self::USER_ID_DE);
+
+        $articleModel = oxNew(Article::class);
+        $articleModel->load(self::ARTICLE_ID);
+        $articleModel->setArticleUser($userDe);
+
+        $this->assertSame('10', $articleModel->getCustomVAT());
+
+        $userBe = oxNew(User::class);
+        $userBe->load(self::USER_ID_BE);
+
+        $articleModel->setArticleUser($userBe);
+        $this->assertSame('15', $articleModel->getCustomVAT());
+    }
+
+    public function testGetArticleVatInsteadOfCountrySpecialVat()
+    {
+        $countryToVat = oxNew(Country2Vat::class);
+        $countryToVat->assign(
+            [
+                'OXCOUNTRYID' => self::COUNTRY_ID_DE,
+                'OXSHOPID' => 1,
+                'VAT' => 12
+            ]
+        );
+        $countryToVat->save();
+
+        $this->setArticleToCountryVat(self::ARTICLE_ID, self::COUNTRY_ID_DE, 11);
+
+        $userDe = oxNew(User::class);
+        $userDe->load(self::USER_ID_DE);
+
+        $articleModel = oxNew(Article::class);
+        $articleModel->load(self::ARTICLE_ID);
+        $articleModel->setArticleUser($userDe);
+
+        //takes the vat value that is set first according to time stamp
+        $this->assertSame('11', $articleModel->getCustomVAT());
+    }
+
+    public function testGetArticleVatInsteadOfCategoryAndCountryVat()
+    {
+        $countryToVat = oxNew(Country2Vat::class);
+        $countryToVat->assign(
+            [
+                'OXCOUNTRYID' => self::COUNTRY_ID_DE,
+                'OXSHOPID' => 1,
+                'VAT' => 15
+            ]
+        );
+        $countryToVat->save();
+
+        $categoryToCountryVat = oxNew(Category2CountryVat::class);
+        $categoryToCountryVat->assign(
+            [
+                'OXCATEGORYID' => self::CATEGORY_ID,
+                'OXCOUNTRYID' => self::COUNTRY_ID_DE,
+                'OXSHOPID' => 1,
+                'VAT' => 12
+            ]
+        );
+        $categoryToCountryVat->save();
+
+        $this->setArticleToCountryVat(self::ARTICLE_ID, self::COUNTRY_ID_DE, 10);
+
+        $userDe = oxNew(User::class);
+        $userDe->load(self::USER_ID_DE);
+
+        $articleModel = oxNew(Article::class);
+        $articleModel->load(self::ARTICLE_ID);
+        $articleModel->setArticleUser($userDe);
+
+        //takes the vat value that is set first according to time stamp
+        $this->assertSame('10', $articleModel->getCustomVAT());
+    }
+
+    protected function setArticleToCountryVat(string $articleId, string $countryId, int $value)
+    {
+        $oNew = oxNew(Product2CountryVat::class);
+        $oNew->oxpsarticle2countryvat__oxarticleid = new Field($articleId);
+        $oNew->oxpsarticle2countryvat__oxcountryid = new Field($countryId);
+        $oNew->oxpsarticle2countryvat__vat = new Field($value);
+        $oNew->save();
+    }
+}

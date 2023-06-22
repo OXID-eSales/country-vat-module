@@ -17,6 +17,15 @@ abstract class BaseTestCase extends TestCase
 {
     use DatabaseTrait;
 
+    protected const COUNTRY_ID_DE = 'testcountry_de';
+    protected const COUNTRY_ID_BE = 'testcountry_be';
+    protected const ARTICLE_ID = '1000';
+    protected const OTHER_ARTICLE_ID = '1001';
+    protected const CATEGORY_ID = 'testcategory0';
+    protected const OTHER_CATEGORY_ID = 'testcategory1';
+    protected const USER_ID_DE = 'de_user';
+    protected const USER_ID_BE = 'be_user';
+
     public function setUp(): void
     {
         parent::setUp();
