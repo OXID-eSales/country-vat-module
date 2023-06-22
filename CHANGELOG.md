@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Migrations directory configured, queries from activation events moved to migrations
+- Compatibility with twig engine (Twig related extensions in Twig directory)
 
 ### Changed
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation

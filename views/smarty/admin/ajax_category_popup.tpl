@@ -1,6 +1,5 @@
 [{include file="popups/headitem.tpl" title="OXPSCOUNTRYVATADMINISTRATION_COUNTRY_MAIN_VAT"|oxmultilangassign}]
 
-
 <script type="text/javascript">
     initAoc = function()
     {
@@ -14,7 +13,7 @@
                 [{/strip}]
                 [{assign var="sSep" value=","}]
                 [{/foreach}] ],
-            '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=article_mainvat&synchoxid=[{$oxid}]'
+            '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=category_mainvat&synchoxid=[{$oxid}]'
         );
 
         [{assign var="sSep" value=""}]
@@ -30,7 +29,7 @@
                 [{/strip}]
                 [{assign var="sSep" value=","}]
                 [{/foreach}] ],
-            '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=article_mainvat&oxid=[{$oxid}]'
+            '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=category_mainvat&oxid=[{$oxid}]'
         )
         YAHOO.oxid.container1.getDropAction = function()
         {
@@ -73,7 +72,7 @@
                 failure: YAHOO.oxid.container2.onFailure,
                 scope:   YAHOO.oxid.container2
             };
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=article_mainvat&fnc=saveAttributeValue&oxid=[{$oxid}]&attr_value=' + encodeURIComponent( $('attr_value').value ) + '&attr_oxid=' + encodeURIComponent( $('attr_oxid').value ), callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=category_mainvat&fnc=saveAttributeValue&oxid=[{$oxid}]&attr_value=' + encodeURIComponent( $('attr_value').value ) + '&attr_oxid=' + encodeURIComponent( $('attr_oxid').value ), callback );
 
         }
         // subscribint event listeners on buttons

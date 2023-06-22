@@ -37,8 +37,8 @@ $aModule = [
         'onActivate'   => '\OxidProfessionalServices\CountryVatAdministration\Core\Events::onActivate',
     ],
     'templates' => [
-        '@oecountryvat/templates/ajax_article_popup.tpl' => 'views/smarty/templates/ajax_article_popup.tpl',
-        '@oecountryvat/templates/ajax_category_popup.tpl' => 'views/smarty/templates/ajax_category_popup.tpl',
+        '@oecountryvat/admin/ajax_article_popup.tpl' => 'views/smarty/admin/ajax_article_popup.tpl',
+        '@oecountryvat/admin/ajax_category_popup.tpl' => 'views/smarty/admin/ajax_category_popup.tpl',
     ],
     'blocks'      => [
         [
