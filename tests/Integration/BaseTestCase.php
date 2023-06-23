@@ -12,7 +12,9 @@ namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Path;
 
 abstract class BaseTestCase extends TestCase
 {
@@ -37,9 +39,10 @@ abstract class BaseTestCase extends TestCase
             ->create()
             ->getConnection();
 
+        $facts = new Facts();
         $connection->executeStatement(
             file_get_contents(
-                __DIR__ . '/../Fixtures/dump.sql'
+                Path::join(__DIR__, '/../', 'Fixtures', 'testdemodata_' . strtolower($facts->getEdition()) . '.sql')
             )
         );
     }
