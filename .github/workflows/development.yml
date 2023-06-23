@@ -312,6 +312,7 @@ jobs:
               --testsuite=Integration \
               --bootstrap=/var/www/source/bootstrap.php \
               --coverage-php=/var/www/integration.cov \
+              --coverage-clover=/var/www/coverage.xml \
               --coverage-text
 
       - name: Upload log artifact
