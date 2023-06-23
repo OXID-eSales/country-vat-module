@@ -13,10 +13,6 @@ use Symfony\Component\Filesystem\Path;
 
 $facts = new Facts();
 
-$selenium_server_port = getenv('SELENIUM_SERVER_PORT');
-$selenium_server_port = ($selenium_server_port) ? $selenium_server_port : '4444';
-$php = (getenv('PHPBIN')) ? getenv('PHPBIN') : 'php';
-
 return [
     'SHOP_URL' => $facts->getShopUrl(),
     'SHOP_SOURCE_PATH' => $facts->getSourcePath(),
@@ -27,14 +23,14 @@ return [
     'DB_HOST' => $facts->getDatabaseHost(),
     'DB_PORT' => $facts->getDatabasePort(),
     'DUMP_PATH' => getTestDataDumpFilePath(),
+    'FIXTURES_PATH' => getTestFixtureSqlFilePath(),
     'MODULE_DUMP_PATH' => getModuleTestDataDumpFilePath(),
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
-    'FIXTURES_PATH' => getTestFixtureSqlFilePath(),
-    'SELENIUM_SERVER_PORT' => $selenium_server_port,
+    'SELENIUM_SERVER_PORT' => getenv('SELENIUM_SERVER_PORT') ?: '4444',
     'SELENIUM_SERVER_HOST' => getenv('SELENIUM_SERVER_HOST') ?: 'selenium',
-    'THEME_ID' => getenv('THEME_ID') ?: 'wave',
+    'THEME_ID' => getenv('THEME_ID') ?: 'flow',
     'BROWSER_NAME' => getenv('BROWSER_NAME') ?: 'chrome',
-    'PHP_BIN' => $php,
+    'PHP_BIN' => getenv('PHPBIN') ?: 'php',
 ];
 
 function getTestDataDumpFilePath(): string
@@ -44,38 +40,22 @@ function getTestDataDumpFilePath(): string
 
 function getTestFixtureSqlFilePath(): string
 {
-    return getShopTestPath() . '/Codeception/_data/dump.sql';
+    $facts = new Facts();
+
+    return Path::join(__DIR__, '/../../', 'Fixtures', 'testdemodata_' . strtolower($facts->getEdition()) . '.sql');
 }
 
 function getModuleTestDataDumpFilePath()
 {
-    return Path::join(__DIR__, '/../', '_data', 'dump.sql');
+    return Path::join(__DIR__, '/../', '_data', 'testdata.sql');
 }
 
-function getShopSuitePath($facts)
-{
-    $testSuitePath = getenv('TEST_SUITE');
-    if (!$testSuitePath) {
-        $testSuitePath = $facts->getShopRootPath().'/tests';
-    }
-    return $testSuitePath;
-}
-
-function getShopTestPath()
+function getMysqlConfigPath()
 {
     $facts = new Facts();
+    $configFilePath = Path::join($facts->getSourcePath(), 'config.inc.php');
+    $configFile = new ConfigFile($configFilePath);
+    $generator = new DatabaseDefaultsFileGenerator($configFile);
 
-    if ($facts->isEnterprise()) {
-        $shopTestPath = $facts->getEnterpriseEditionRootPath().'/Tests';
-    } else {
-        $shopTestPath = getShopSuitePath($facts);
-    }
-    return $shopTestPath;
-}
-
-function getMysqlConfigPath(): string
-{
-    $configFile = new ConfigFile();
-
-    return (new DatabaseDefaultsFileGenerator($configFile))->generate();
+    return $generator->generate();
 }

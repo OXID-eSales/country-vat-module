@@ -21,7 +21,7 @@
         </include>
     </coverage>
     <testsuites>
-        <testsuite name="IntegrationTests">
+        <testsuite name="Integration">
             <directory>Integration</directory>
         </testsuite>
     </testsuites>
