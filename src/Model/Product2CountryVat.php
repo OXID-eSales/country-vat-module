@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -31,7 +32,7 @@ class Product2CountryVat extends BaseModel
         $shopId = EshopRegistry::getConfig()->getShopId();
         $db = DatabaseProvider::getDb();
 
-        $query =  'SELECT OXID FROM ' . $this->getCoreTableName() .
+        $query = 'SELECT OXID FROM ' . $this->getCoreTableName() .
                   ' WHERE OXARTICLEID=' . $db->quote($articleId) .
                   ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
                   ' AND   OXSHOPID=' . $db->quote($shopId);

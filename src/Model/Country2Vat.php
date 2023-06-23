@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -24,9 +25,12 @@ class Country2Vat extends BaseModel
         $this->init('oxps_country2vat');
     }
 
-    public function loadFromCountryAndShopId(string $countryId, int $shopId): bool {
+    public function loadFromCountryAndShopId(string $countryId, int $shopId): bool
+    {
         $db = DatabaseProvider::getDb();
-        $oxid = (string) $db->getOne('SELECT OXID FROM ' . $this->getCoreTableName() . ' WHERE OXCOUNTRYID=' . $db->quote($countryId) . ' AND' . ' OXSHOPID=' . $db->quote($shopId));
+        $oxid = (string) $db->getOne('SELECT OXID FROM ' . $this->getCoreTableName() . '
+                                        WHERE OXCOUNTRYID=' . $db->quote($countryId) . '
+                                        AND' . ' OXSHOPID=' . $db->quote($shopId));
         return $this->load($oxid);
     }
 

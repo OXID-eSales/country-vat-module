@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -42,7 +43,7 @@ class Category2CountryVat extends BaseModel
         }
         $queryPart = implode(',', $tmp);
 
-        $query =  'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
+        $query = 'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
                   ' WHERE OXCATEGORYID IN (' . $queryPart . ')' .
                   ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
                   ' AND   OXSHOPID=' . $db->quote($shopId) .

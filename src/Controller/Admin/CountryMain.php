@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -29,7 +30,6 @@ class CountryMain extends CountryMain_parent
                 $countryToVat->assign(['OXCOUNTRYID' => $oxcountryId, 'OXSHOPID' => $shopId, 'VAT' => $vat]);
                 $noProblemsWithCountryVatUpdate = $countryToVat->save();
             }
-
         }
         return $noProblemsWithCountryVatUpdate && parent::save();
     }
