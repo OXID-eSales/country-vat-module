@@ -8,7 +8,9 @@
 namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration\Controller;
 
 use OxidProfessionalServices\CountryVatAdministration\Controller\Admin\ArticleMainAjax;
+use OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMainAjax;
 use OxidProfessionalServices\CountryVatAdministration\Model\Article;
+use OxidProfessionalServices\CountryVatAdministration\Model\Category2CountryVat;
 use OxidProfessionalServices\CountryVatAdministration\Model\Product2CountryVat;
 use OxidProfessionalServices\CountryVatAdministration\Model\User;
 use OxidProfessionalServices\CountryVatAdministration\Tests\Integration\BaseTestCase;
@@ -38,7 +40,7 @@ class ArticleMainAjaxTest extends BaseTestCase
         $this->assertEquals('19', $articleModel->getCustomVAT());
     }
 
-    public function testUnassignCountryFromCategory()
+    public function testUnassignCountryFromArticle()
     {
         $_POST['synchoxid'] = self::ARTICLE_ID;
         $_POST['cmpid'] = 'container1';
@@ -55,6 +57,28 @@ class ArticleMainAjaxTest extends BaseTestCase
 
         $_POST['cmpid'] = 'container2';
         $_POST['_1'] = [$deProduct2CountryId, $beProduct2CountryId];
+        $ajax->removeAttr();
+
+        $this->assertFalse($product2Country->loadByProductCountry(self::ARTICLE_ID, self::COUNTRY_ID_DE));
+        $this->assertFalse($product2Country->loadByProductCountry(self::ARTICLE_ID, self::COUNTRY_ID_BE));
+    }
+
+    public function testAssignAndUnassignAllCountriesForArticle()
+    {
+        $_POST['synchoxid'] = self::ARTICLE_ID;
+        $_POST['cmpid'] = 'container1';
+        $_POST['all'] = 1;
+
+        $ajax = oxNew(ArticleMainAjax::class);
+        $ajax->addAttr();
+
+        $product2Country = oxNew(Product2CountryVat::class);
+        $this->assertTrue($product2Country->loadByProductCountry(self::ARTICLE_ID, self::COUNTRY_ID_DE));
+        $this->assertTrue($product2Country->loadByProductCountry(self::ARTICLE_ID, self::COUNTRY_ID_BE));
+
+        $_POST['oxid'] = self::ARTICLE_ID;
+        $_POST['all'] = 1;
+        $_POST['cmpid'] = 'container2';
         $ajax->removeAttr();
 
         $this->assertFalse($product2Country->loadByProductCountry(self::ARTICLE_ID, self::COUNTRY_ID_DE));

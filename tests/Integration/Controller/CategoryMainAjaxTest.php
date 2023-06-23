@@ -60,4 +60,26 @@ class CategoryMainAjaxTest extends BaseTestCase
         $this->assertFalse($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_DE));
         $this->assertFalse($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_BE));
     }
+
+    public function testAssignAndUnassignAllCountriesForCategory()
+    {
+        $_POST['synchoxid'] = self::CATEGORY_ID;
+        $_POST['cmpid'] = 'container1';
+        $_POST['all'] = 1;
+
+        $ajax = oxNew(CategoryMainAjax::class);
+        $ajax->addAttr();
+
+        $category2Country = oxNew(Category2CountryVat::class);
+        $this->assertTrue($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_DE));
+        $this->assertTrue($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_BE));
+
+        $_POST['oxid'] = self::CATEGORY_ID;
+        $_POST['all'] = 1;
+        $_POST['cmpid'] = 'container2';
+        $ajax->removeAttr();
+
+        $this->assertFalse($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_DE));
+        $this->assertFalse($category2Country->loadByFirstCategoryCountry([self::CATEGORY_ID], self::COUNTRY_ID_BE));
+    }
 }

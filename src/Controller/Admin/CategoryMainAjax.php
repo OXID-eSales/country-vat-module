@@ -41,15 +41,15 @@ class CategoryMainAjax extends ListComponentAjax
     protected function getQuery()
     {
         $oDb = DatabaseProvider::getDb();
-        $sArtId = Registry::getRequest()->getRequestParameter('oxid');
+        $sCategoryId = Registry::getRequest()->getRequestParameter('oxid');
         $sSynchArtId = Registry::getRequest()->getRequestParameter('synchoxid');
 
         $sAttrViewName = $this->getViewName('oxcountry');
         $sO2AViewName = $this->getViewName('oxpscategory2countryvat');
-        if ($sArtId) {
+        if ($sCategoryId) {
             $sQAdd = " from {$sO2AViewName} left join {$sAttrViewName} " .
                      "on {$sAttrViewName}.oxid={$sO2AViewName}.oxcountryid " .
-                     " where {$sO2AViewName}.oxcategoryid = " . $oDb->quote($sArtId) . " " .
+                     " where {$sO2AViewName}.oxcategoryid = " . $oDb->quote($sCategoryId) . " " .
                      " and {$sAttrViewName}.oxactive = " . $oDb->quote(1) . " ";
         } else {
             $sQAdd = " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxcountryid " .
