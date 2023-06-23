@@ -13,6 +13,9 @@ use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Basket;
 
+/**
+ * @group oecountryvat
+ */
 final class UpdateVatAdminCest
 {
     private string $countryVatSelector = "//div[@id='container2_c']/table//td//*[contains(text(), '%s')]";
