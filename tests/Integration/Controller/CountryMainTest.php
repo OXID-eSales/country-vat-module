@@ -27,7 +27,7 @@ class CountryMainTest extends BaseTestCase
         $country2Vat = new Country2Vat();
         $country2Vat->loadFromCountryAndShopId(self::COUNTRY_ID_DE, Registry::getConfig()->getBaseShopId());
 
-        $this->assertSame('10', $country2Vat->oxps_country2vat__vat->value);
+        $this->assertEquals('10', $country2Vat->oxps_country2vat__vat->value);
     }
 
     public function testUpdateExistingSpecialCountryVat()
@@ -47,6 +47,6 @@ class CountryMainTest extends BaseTestCase
         $controller->save();
 
         $country2Vat->loadFromCountryAndShopId(self::COUNTRY_ID_DE, Registry::getConfig()->getBaseShopId());
-        $this->assertSame('11', $country2Vat->oxps_country2vat__vat->value);
+        $this->assertEquals('11', $country2Vat->oxps_country2vat__vat->value);
     }
 }

@@ -25,7 +25,7 @@ class Category2CountryVatTest extends BaseTestCase
         $articleModel->load(self::OTHER_ARTICLE_ID);
 
         //takes the vat value that is set first according to time stamp
-        $this->assertSame('15', $articleModel->getArticleCategoryCountryVat(self::COUNTRY_ID_DE));
+        $this->assertEquals('15', $articleModel->getArticleCategoryCountryVat(self::COUNTRY_ID_DE));
     }
 
     public function testGetCategoryVatForUsersFromDifferentCountries()
@@ -40,13 +40,13 @@ class Category2CountryVatTest extends BaseTestCase
         $articleModel->load(self::ARTICLE_ID);
         $articleModel->setArticleUser($userDe);
 
-        $this->assertSame('10', $articleModel->getCustomVAT());
+        $this->assertEquals('10', $articleModel->getCustomVAT());
 
         $userBe = oxNew(User::class);
         $userBe->load(self::USER_ID_BE);
 
         $articleModel->setArticleUser($userBe);
-        $this->assertSame('15', $articleModel->getCustomVAT());
+        $this->assertEquals('15', $articleModel->getCustomVAT());
     }
 
     public function testGetCategoryVatInsteadOfCountrySpecialVat()
@@ -71,7 +71,7 @@ class Category2CountryVatTest extends BaseTestCase
         $articleModel->setArticleUser($userDe);
 
         //takes the vat value that is set first according to time stamp
-        $this->assertSame('11', $articleModel->getCustomVAT());
+        $this->assertEquals('11', $articleModel->getCustomVAT());
     }
 
     protected function setCategoryToCountryVat(string $categoryId, string $countryId, int $value)

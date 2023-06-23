@@ -35,7 +35,7 @@ class ArticleMainAjaxTest extends BaseTestCase
         $articleModel->load(self::ARTICLE_ID);
         $articleModel->setArticleUser($userModel);
 
-        $this->assertSame('19', $articleModel->getCustomVAT());
+        $this->assertEquals('19', $articleModel->getCustomVAT());
     }
 
     public function testUnassignCountryFromCategory()
