@@ -308,7 +308,7 @@ jobs:
           docker-compose exec -T \
             -e XDEBUG_MODE=coverage \
             php php vendor/bin/phpunit \
-              -c /var/www/vendor/${{ env.PACKAGE_NAME }}/tests/phpintegration.xml \
+              -c /var/www/vendor/${{ env.PACKAGE_NAME }}/tests/phpunit.xml \
               --testsuite=Integration \
               --bootstrap=/var/www/source/bootstrap.php \
               --coverage-php=/var/www/integration.cov \
