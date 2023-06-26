@@ -141,6 +141,8 @@ final class UpdateVatAdminCest
 
     private function addProductVat(AcceptanceTester $I, $adminPage, string $vat): void
     {
+        $country = 'Germany';
+
         $productList = $adminPage->openProducts();
         $this->switchLanguage($I, Fixtures::get('language'));
         $productList->find('where[oxarticles][oxartnum]', Fixtures::get('product'));
@@ -149,10 +151,11 @@ final class UpdateVatAdminCest
         $I->click($this->specificVatButton);
         $I->switchToNextTab();//codeception way of opening next window
         $I->waitForDocumentReadyState();
+        $I->waitForText($country);
         $I->click(Translator::translate('GENERAL_AJAX_ASSIGNALL'));
-        $I->waitForAjax(10);
 
-        $I->click(sprintf($this->countryVatSelector, 'Germany'));
+        $I->waitForElement(sprintf($this->countryVatSelector, $country));
+        $I->click(sprintf($this->countryVatSelector, $country));
         $I->fillField($this->categoryVatInput, $vat);
         $I->click(Translator::translate('GENERAL_SAVE'));
         $I->closeTab();
@@ -164,14 +167,17 @@ final class UpdateVatAdminCest
         $this->switchLanguage($I, Fixtures::get('language'));
         $categoryList->selectCategory(Fixtures::get('category'));
 
+        $country = 'Germany';
+
         $I->selectEditFrame();
         $I->click($this->specificVatButton);
         $I->switchToNextTab();//codeception way of opening next window
         $I->waitForDocumentReadyState();
+        $I->waitForText($country);
         $I->click(Translator::translate('GENERAL_AJAX_ASSIGNALL'));
-        $I->waitForAjax(10);
 
-        $I->click(sprintf($this->countryVatSelector, 'Germany'));
+        $I->waitForElement(sprintf($this->countryVatSelector, $country));
+        $I->click(sprintf($this->countryVatSelector, $country));
         $I->fillField($this->categoryVatInput, $vat);
         $I->click(Translator::translate('GENERAL_SAVE'));
         $I->closeTab();
