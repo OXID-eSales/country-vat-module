@@ -30,14 +30,14 @@ class Product2CountryVat extends BaseModel
     public function loadByProductCountry(string $articleId, string $countryId): bool
     {
         $shopId = EshopRegistry::getConfig()->getShopId();
-        $db = DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
 
         $query = 'SELECT OXID FROM ' . $this->getCoreTableName() .
-                  ' WHERE OXARTICLEID=' . $db->quote($articleId) .
-                  ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
-                  ' AND   OXSHOPID=' . $db->quote($shopId);
+                  ' WHERE OXARTICLEID=' . $oDb->quote($articleId) .
+                  ' AND   OXCOUNTRYID=' . $oDb->quote($countryId) .
+                  ' AND   OXSHOPID=' . $oDb->quote($shopId);
 
-        $oxid = (string) $db->getOne($query);
+        $oxid = (string) $oDb->getOne($query);
 
         return $this->load($oxid);
     }
@@ -48,19 +48,5 @@ class Product2CountryVat extends BaseModel
     public function getVat()
     {
         return $this->getFieldData('vat');
-    }
-
-    /**
-     * Gets field data
-     *
-     * @param string $fieldName name (eg. 'oxtitle') of a data field to get
-     *
-     * @return mixed value of a data field
-     */
-    public function getFieldData($fieldName)
-    {
-        $longFieldName = $this->getFieldLongName($fieldName);
-
-        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->value : null;
     }
 }

@@ -84,7 +84,8 @@ class Article extends Article_parent
 
         //TODO: check if this can be fetched in one go
         //if we failed to find something, we might have a variant so check the parent
-        if (!$loaded && ($parentId = $this->getParentId())) {
+        $parentId = $this->getParentId();
+        if (!$loaded && $parentId) {
             $articleVatRelation->loadByProductCountry($parentId, $countryId);
         }
 
@@ -97,11 +98,6 @@ class Article extends Article_parent
     public function getArticleUserVatCountryId()
     {
         $user = $this->getArticleUser();
-
-        if (!$user) {
-            //bail out, we don't know the country
-            return null;
-        }
 
         return $user->getVatCountry();
     }

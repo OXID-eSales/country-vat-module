@@ -8,6 +8,7 @@
 namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
@@ -47,19 +48,16 @@ class CategoryMainAjax extends ListComponentAjax
         $sAttrViewName = $this->getViewName('oxcountry');
         $sO2AViewName = $this->getViewName('oxpscategory2countryvat');
         if ($sCategoryId) {
-            $sQAdd = " from {$sO2AViewName} left join {$sAttrViewName} " .
+            return " from {$sO2AViewName} left join {$sAttrViewName} " .
                      "on {$sAttrViewName}.oxid={$sO2AViewName}.oxcountryid " .
                      " where {$sO2AViewName}.oxcategoryid = " . $oDb->quote($sCategoryId) . " " .
                      " and {$sAttrViewName}.oxactive = " . $oDb->quote(1) . " ";
-        } else {
-            $sQAdd = " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxcountryid " .
-                     "from {$sO2AViewName} left join {$sAttrViewName} " .
-                     "on {$sAttrViewName}.oxid={$sO2AViewName}.oxcountryid " .
-                     " where {$sO2AViewName}.oxcategoryid = " . $oDb->quote($sSynchArtId) . " ) " .
-                     " and {$sAttrViewName}.oxactive = " . $oDb->quote(1) . " ";
         }
-
-        return $sQAdd;
+        return " from {$sAttrViewName} where {$sAttrViewName}.oxid not in ( select {$sO2AViewName}.oxcountryid " .
+                 "from {$sO2AViewName} left join {$sAttrViewName} " .
+                 "on {$sAttrViewName}.oxid={$sO2AViewName}.oxcountryid " .
+                 " where {$sO2AViewName}.oxcategoryid = " . $oDb->quote($sSynchArtId) . " ) " .
+                 " and {$sAttrViewName}.oxactive = " . $oDb->quote(1) . " ";
     }
 
     /**
@@ -70,12 +68,12 @@ class CategoryMainAjax extends ListComponentAjax
         $aChosenArt = $this->getActionIds('oxpscategory2countryvat.oxid');
         if (Registry::getRequest()->getRequestParameter('all')) {
             $sO2AViewName = $this->getViewName('oxpscategory2countryvat');
-            $sQ = $this->addFilter("delete $sO2AViewName.* " . $this->getQuery());
-            DatabaseProvider::getDb()->Execute($sQ);
+            $sQuery = $this->addFilter("delete $sO2AViewName.* " . $this->getQuery());
+            DatabaseProvider::getDb()->Execute($sQuery);
         } elseif (is_array($aChosenArt)) {
             $sChosenArticles = implode(", ", DatabaseProvider::getDb()->quoteArray($aChosenArt));
-            $sQ = "delete from oxpscategory2countryvat where oxpscategory2countryvat.oxid in ({$sChosenArticles}) ";
-            DatabaseProvider::getDb()->Execute($sQ);
+            $sQuery = "delete from oxpscategory2countryvat where oxpscategory2countryvat.oxid in ({$sChosenArticles}) ";
+            DatabaseProvider::getDb()->Execute($sQuery);
         }
     }
 
@@ -95,8 +93,12 @@ class CategoryMainAjax extends ListComponentAjax
         if ($soxId && $soxId != "-1" && is_array($aAddCat)) {
             foreach ($aAddCat as $sAdd) {
                 $oNew = oxNew(Category2CountryVat::class);
-                $oNew->oxpscategory2countryvat__oxcategoryid = new Field($soxId);
-                $oNew->oxpscategory2countryvat__oxcountryid = new Field($sAdd);
+                $oNew->assign(
+                    [
+                        'oxcategoryid' => new Field($soxId),
+                        'oxcountryid' => new Field($sAdd),
+                    ]
+                );
                 $oNew->save();
             }
         }
@@ -104,8 +106,6 @@ class CategoryMainAjax extends ListComponentAjax
 
     /**
      * Saves attribute value
-     *
-     * @return null
      */
     public function saveAttributeValue()
     {
@@ -121,15 +121,17 @@ class CategoryMainAjax extends ListComponentAjax
         if ($category->load($categoryId)) {
             if (isset($vatValue) && ("" != $vatValue)) {
                 $viewName = $this->getViewName("oxpscategory2countryvat");
-                $quotedCategoryId = $database->quote($category->oxcategories__oxid->value);
+                $quotedCategoryId = $database->quote($category->getId());
                 $select = "select * from {$viewName} where {$viewName}.oxcategoryid= {$quotedCategoryId} and
                             {$viewName}.oxcountryid= " . $database->quote($countryId);
+
+                /** @var ResultSet $record */
                 $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($select);
 
                 $objectToAttribute = oxNew(Category2CountryVat::class);
-                if ($record && $record->count() > 0) {
+                if ($record->count() > 0) {
                     $objectToAttribute->assign($record->fields);
-                    $objectToAttribute->oxpscategory2countryvat__vat->setValue($vatValue);
+                    $objectToAttribute->assign(['vat' => $vatValue]);
                     $objectToAttribute->save();
                 }
             }

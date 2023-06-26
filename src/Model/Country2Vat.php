@@ -27,15 +27,15 @@ class Country2Vat extends BaseModel
 
     public function loadFromCountryAndShopId(string $countryId, int $shopId): bool
     {
-        $db = DatabaseProvider::getDb();
-        $oxid = (string) $db->getOne('SELECT OXID FROM ' . $this->getCoreTableName() . '
-                                        WHERE OXCOUNTRYID=' . $db->quote($countryId) . '
-                                        AND' . ' OXSHOPID=' . $db->quote($shopId));
+        $oDb = DatabaseProvider::getDb();
+        $oxid = (string) $oDb->getOne('SELECT OXID FROM ' . $this->getCoreTableName() . '
+                                        WHERE OXCOUNTRYID=' . $oDb->quote($countryId) . '
+                                        AND' . ' OXSHOPID=' . $oDb->quote($shopId));
         return $this->load($oxid);
     }
 
     public function vat()
     {
-        return $this->oxps_country2vat__vat->value;
+        return $this->getFieldData('vat');
     }
 }
