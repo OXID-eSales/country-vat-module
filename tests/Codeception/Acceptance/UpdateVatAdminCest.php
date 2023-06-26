@@ -20,7 +20,8 @@ final class UpdateVatAdminCest
 {
     private string $countryVatSelector = "//div[@id='container2_c']/table//td//*[contains(text(), '%s')]";
     private string $countryVatInput = '#oxps_countryvatadministration_country_vat';
-    private string $vatCell = '//tr[%d]//td[@class="vatPercent"]';
+    private string $vatCell = '//div[contains(@class, "basketitemrow")][%d]//span[@class="article-vat"]';
+    private string $vatCellSmarty = '//tr[%d]//td[@class="vatPercent"]';
     private string $languageSelect = "//select[@name='changelang']";
     private string $specificVatButton = "//input[@value='Country Specific VAT']";
     private string $categoryVatInput = "#attr_value";
@@ -103,11 +104,10 @@ final class UpdateVatAdminCest
             $basket->addProductToBasket($product['id'], 1);
         }
 
-        $home->openMiniBasket()
-            ->openBasketDisplay();
+        $home->openBasket();
 
         foreach ($products as $index => $product) {
-            $I->see($product['vat'], sprintf($this->vatCell, $index + 1));
+            $this->seeProductVat($I, $product['vat'], $index + 1);
         }
     }
 
@@ -120,8 +120,10 @@ final class UpdateVatAdminCest
         $home->loginUser($germanUser['userLoginName'], $germanUser['userPassword']);
 
         $basket = new Basket($I);
-        $basket->addProductToBasketAndOpenBasket('1000', 1);
-        $I->see($vatValue, sprintf($this->vatCell, 1));
+        $basket->addProductToBasket('1000', 1);
+        $home->openBasket();
+
+        $this->seeProductVat($I, $vatValue);
     }
 
     /**
@@ -184,5 +186,18 @@ final class UpdateVatAdminCest
         $I->selectEditFrame();
         $I->fillField($this->countryVatInput, $vat);
         $I->click(Translator::translate('GENERAL_SAVE'));
+    }
+
+    private function seeProductVat(AcceptanceTester $I, string $vatValue, int $index = 1): void
+    {
+        if (getenv('THEME_ID') !== 'apex') {
+            $vatTextValue = $vatValue;
+            $vatCellElement = $this->vatCellSmarty;
+        } else {
+            $vatTextValue = str_replace('%', ' % ' . Translator::translate('VAT'), $vatValue);
+            $vatCellElement = $this->vatCell;
+        }
+
+        $I->see($vatTextValue, sprintf($vatCellElement, $index));
     }
 }
