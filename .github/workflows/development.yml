@@ -436,6 +436,15 @@ jobs:
           make up
           sleep 2
 
+      - name: Collect and merge coverage reports
+        continue-on-error: true
+        run: |
+          ls -alh source/coverage
+          wget https://phar.phpunit.de/phpcov-8.2.1.phar
+          mv phpcov-8.2.1.phar source/phpcov.phar
+          docker-compose exec -T php php phpcov.phar merge --clover coverage.xml ./coverage
+          perl -pi -e 's#/var/www/test-module/#./#g;' source/coverage.xml
+
       - name: Upload log artifact
         uses: actions/upload-artifact@v3
         with:

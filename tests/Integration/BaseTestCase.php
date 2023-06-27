@@ -11,15 +11,12 @@ namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\Facts\Facts;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 
-abstract class BaseTestCase extends TestCase
+abstract class BaseTestCase extends IntegrationTestCase
 {
-    use DatabaseTrait;
-
     protected const COUNTRY_ID_DE = 'testcountry_de';
     protected const COUNTRY_ID_BE = 'testcountry_be';
     protected const ARTICLE_ID = '1000';
@@ -45,11 +42,5 @@ abstract class BaseTestCase extends TestCase
                 Path::join(__DIR__, '/../', 'Fixtures', 'testdemodata_' . strtolower($facts->getEdition()) . '.sql')
             )
         );
-    }
-
-    public function tearDown(): void
-    {
-        $this->setupShopDatabase();
-        parent::tearDown();
     }
 }
