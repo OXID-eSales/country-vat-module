@@ -12,7 +12,6 @@ bootstrap: _bootstrap.php
 modules:
     enabled:
         - Asserts
-        - \OxidProfessionalServices\CountryVatAdministration\Tests\Codeception\Helper\Acceptance
         - WebDriver:
             url: '%SHOP_URL%'
             host: '%SELENIUM_SERVER_HOST%'
