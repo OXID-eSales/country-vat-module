@@ -5,15 +5,15 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration\Controller;
+namespace OxidEsales\CountryVat\Tests\Integration\Controller;
 
 use OxidEsales\Eshop\Core\Field;
-use OxidProfessionalServices\CountryVatAdministration\Model\Article;
-use OxidProfessionalServices\CountryVatAdministration\Model\Category2CountryVat;
-use OxidProfessionalServices\CountryVatAdministration\Model\Country2Vat;
-use OxidProfessionalServices\CountryVatAdministration\Model\Product2CountryVat;
-use OxidProfessionalServices\CountryVatAdministration\Model\User;
-use OxidProfessionalServices\CountryVatAdministration\Tests\Integration\BaseTestCase;
+use OxidEsales\CountryVat\Model\Article;
+use OxidEsales\CountryVat\Model\Category2CountryVat;
+use OxidEsales\CountryVat\Model\Country2Vat;
+use OxidEsales\CountryVat\Model\Product2CountryVat;
+use OxidEsales\CountryVat\Model\User;
+use OxidEsales\CountryVat\Tests\Integration\BaseTestCase;
 
 class Product2CountryVatTest extends BaseTestCase
 {
