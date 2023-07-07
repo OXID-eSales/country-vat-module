@@ -9,8 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Migrations directory configured, queries from activation events moved to migrations
 - Compatibility with twig engine (Twig related extensions in Twig directory)
+- Integration and Codeception tests
+- Support for APEX theme
+- Development workflows with test runners
 
 ### Changed
+- Adapted module to work with OXID eShop 7.0.x
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
 - Moved all php code to `src` directory
 
