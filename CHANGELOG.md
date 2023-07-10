@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.5] - 2023-07-10
+
+### Changed
+- Updated to OXID 7.0.0
+
 ## [1.0.4] - Unreleased
 
 ### Changed

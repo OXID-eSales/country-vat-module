@@ -5,8 +5,7 @@
  */
 
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
-
-use OxidEsales\Eshop\Application\Model\Article as EshopModelArticle;
+use OxidEsales\Eshop\Core\Registry;
 
 class User extends User_parent
 {
@@ -18,10 +17,10 @@ class User extends User_parent
      */
     public function getVatCountry()
     {
-        $blUseShippingCountry = $this->getConfig()->getConfigParam("blShippingCountryVat");
+        $blUseShippingCountry = Registry::getConfig()->getConfigParam('blShippingCountryVat');
 
         if ($blUseShippingCountry) {
-            $addresses = $this->getUserAddresses($this->getId());
+            $addresses       = $this->getUserAddresses($this->getId());
             $selectedAddress = $this->getSelectedAddressId();
 
             if (isset($addresses[$selectedAddress])) {

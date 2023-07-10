@@ -6,10 +6,10 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
 
-use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
+use OxidProfessionalServices\CountryVatAdministration\Core\Service;
 
 class Category2CountryVat extends BaseModel
 {
@@ -29,26 +29,40 @@ class Category2CountryVat extends BaseModel
     public function loadByFirstCategoryCountry(array $categoryIds, string $countryId): bool
     {
         if (empty($categoryIds)) {
-            //nothing to be done
+            // nothing to be done
             return false;
         }
 
         $shopId = EshopRegistry::getConfig()->getShopId();
-        $db = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        // $db     = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $tmp = [];
-        foreach ($categoryIds as $id) {
-            $tmp[] = $db->quote($id);
-        }
-        $queryPart = implode(',', $tmp);
+        // $tmp = [];
+        // foreach ($categoryIds as $id) {
+        //     $tmp[] = $db->quote($id);
+        // }
+        // $queryPart = implode(',', $tmp);
 
-        $query =  'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
-                  ' WHERE OXCATEGORYID IN (' . $queryPart . ')' .
-                  ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
-                  ' AND   OXSHOPID=' . $db->quote($shopId) .
-                  ' ORDER BY FIELD (OXCATEGORYID, ' . $queryPart . ')';
+        // $query =  'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
+        //           ' WHERE OXCATEGORYID IN (' . $queryPart . ')' .
+        //           ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
+        //           ' AND   OXSHOPID=' . $db->quote($shopId) .
+        //           ' ORDER BY FIELD (OXCATEGORYID, ' . $queryPart . ')';
 
-        $oxid = (string) $db->getOne($query);
+        // $oxid = (string) $db->getOne($query);
+        $queryBuilder = Service::getInstance()->getQueryBuilder();
+        $oxid         = (string) $queryBuilder
+            ->select('OXID')
+            ->from($this->getCoreTableName())
+            ->where('OXCATEGORYID IN (:categoryIds)')
+            ->setParameter('categoryIds', $categoryIds, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
+            ->andWhere('OXCOUNTRYID = :countryId')
+            ->setParameter('countryId', $countryId)
+            ->andWhere('OXSHOPID = :shopId')
+            ->setParameter('shopId', $shopId)
+            ->orderBy('FIELD (OXCATEGORYID, :categoryIds)')
+            ->execute()
+            ->fetchOne()
+        ;
 
         return $this->load($oxid);
     }
@@ -59,7 +73,7 @@ class Category2CountryVat extends BaseModel
     }
 
     /**
-     * Gets field data
+     * Gets field data.
      *
      * @param string $fieldName name (eg. 'oxtitle') of a data field to get
      *
@@ -67,8 +81,8 @@ class Category2CountryVat extends BaseModel
      */
     public function getFieldData($fieldName)
     {
-        $longFieldName = $this->_getFieldLongName($fieldName);
+        $longFieldName = $this->getFieldLongName($fieldName);
 
-        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->value : null;
+        return ($this->{$longFieldName} instanceof Field) ? $this->{$longFieldName}->value : null;
     }
 }

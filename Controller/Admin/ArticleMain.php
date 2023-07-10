@@ -20,10 +20,12 @@ class ArticleMain extends ArticleMain_parent
         $fromParent = parent::render();
 
         if (EshopRegistry::getRequest()->getRequestParameter('cvat')) {
-            $ajax = oxNew(ArticleMainAjax::class);
+            $ajax                       = oxNew(ArticleMainAjax::class);
             $this->_aViewData['oxajax'] = $ajax->getColumns();
-            return 'ajax_article_popup.tpl';
+
+            return '@oxps_countryvatadministration/ajax_article_popup';
         }
+
         return $fromParent;
     }
 }

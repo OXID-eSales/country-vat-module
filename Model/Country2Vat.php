@@ -2,8 +2,8 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
 
-use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Model\BaseModel;
+use OxidProfessionalServices\CountryVatAdministration\Core\Service;
 
 class Country2Vat extends BaseModel
 {
@@ -20,9 +20,20 @@ class Country2Vat extends BaseModel
         $this->init('oxps_country2vat');
     }
 
-    public function loadFromCountryAndShopId(string $countryId, int $shopId): bool {
-        $db = DatabaseProvider::getDb();
-        $oxid = (string) $db->getOne('SELECT OXID FROM ' . $this->getCoreTableName() . ' WHERE OXCOUNTRYID=' . $db->quote($countryId) . ' AND' . ' OXSHOPID=' . $db->quote($shopId));
+    public function loadFromCountryAndShopId(string $countryId, int $shopId): bool
+    {
+        $queryBuilder = Service::getInstance()->getQueryBuilder();
+        // old query
+        // $oxid = (string) $db->getOne('SELECT OXID FROM ' . $this->getCoreTableName() . ' WHERE OXCOUNTRYID=' . $db->quote($countryId) . ' AND OXSHOPID=' . $db->quote($shopId));
+        $oxid = (string) $queryBuilder->select('OXID')
+            ->from($this->getCoreTableName())
+            ->where('OXCOUNTRYID = :countryId')
+            ->setParameter('countryId', $countryId)
+            ->andWhere('OXSHOPID = :shopId')
+            ->setParameter('shopId', $shopId)
+            ->execute()
+            ->fetchOne();
+
         return $this->load($oxid);
     }
 

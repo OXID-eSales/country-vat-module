@@ -6,16 +6,15 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
 
-use OxidEsales\Eshop\Application\Model\Article as EshopModelArticle;
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 
 class Article extends Article_parent
 {
     /**
      * Returns custom article VAT value if possible
-     * By default value is taken from oxarticle__oxvat field
+     * By default value is taken from oxarticle__oxvat field.
      *
-     * @return double
+     * @return float
      */
     public function getCustomVAT()
     {
@@ -23,14 +22,13 @@ class Article extends Article_parent
         if (is_numeric($vat)) {
             return $vat;
         }
-
         return parent::getCustomVAT();
     }
-    
+
     /**
-     * get special vat for article user country
+     * get special vat for article user country.
      *
-     * @return double | null
+     * @return null|float
      */
     public function getArticleUserCountryVat()
     {
@@ -40,50 +38,37 @@ class Article extends Article_parent
             return null;
         }
 
-        $vat = $this->getArticleCountryVat($countryId);
-
-        if (is_null($vat)) {
-            $vat = $this->getArticleCategoryCountryVat($countryId);
-        }
-        if (is_null($vat)) {
-            $vat = $this->getCountryVat($countryId);
-        }
-
-        return $vat;
+        return $this->getArticleCountryVat($countryId) ?? $this->getArticleCategoryCountryVat($countryId) ?? $this->getCountryVat($countryId);
     }
 
     /**
-     * get article category user country vat
+     * get article category user country vat.
      *
-     * @param string $countryId
-     *
-     * @return float|null
+     * @return null|float
      */
     public function getArticleCategoryCountryVat(string $countryId)
     {
-        //fetch category ids, first in is the main category
+        // fetch category ids, first in is the main category
         $categoryIds = $this->getCategoryIds();
 
         $categoryVatRelation = oxNew(Category2CountryVat::class);
-        $categoryVatRelation->loadByFirstCategoryCountry($categoryIds,  $countryId);
+        $categoryVatRelation->loadByFirstCategoryCountry($categoryIds, $countryId);
 
         return $categoryVatRelation->getVat();
     }
 
     /**
-     * get article user country vat
+     * get article user country vat.
      *
-     * @param string $countryId
-     *
-     * @return float|null
+     * @return null|float
      */
     public function getArticleCountryVat(string $countryId)
     {
         $articleVatRelation = oxNew(Product2CountryVat::class);
-        $loaded = $articleVatRelation->loadByProductCountry((string) $this->getId(), $countryId);
+        $loaded             = $articleVatRelation->loadByProductCountry((string) $this->getId(), $countryId);
 
-        //TODO: check if this can be fetched in one go
-        //if we failed to find something, we might have a variant so check the parent
+        // TODO: check if this can be fetched in one go
+        // if we failed to find something, we might have a variant so check the parent
         if (!$loaded && ($parentId = $this->getParentId())) {
             $articleVatRelation->loadByProductCountry($parentId, $countryId);
         }
@@ -92,14 +77,14 @@ class Article extends Article_parent
     }
 
     /**
-     * @return string | null
+     * @return null|string
      */
     public function getArticleUserVatCountryId()
     {
         $user = $this->getArticleUser();
 
         if (!$user) {
-            //bail out, we don't know the country
+            // bail out, we don't know the country
             return null;
         }
 
@@ -107,11 +92,9 @@ class Article extends Article_parent
     }
 
     /**
-     * get user country vat
+     * get user country vat.
      *
-     * @param string $countryId
-     *
-     * @return float|null
+     * @return null|float
      */
     protected function getCountryVat(string $countryId)
     {

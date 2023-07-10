@@ -6,10 +6,10 @@
 
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
 
-use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
+use OxidProfessionalServices\CountryVatAdministration\Core\Service;
 
 class Product2CountryVat extends BaseModel
 {
@@ -29,20 +29,32 @@ class Product2CountryVat extends BaseModel
     public function loadByProductCountry(string $articleId, string $countryId): bool
     {
         $shopId = EshopRegistry::getConfig()->getShopId();
-        $db = DatabaseProvider::getDb();
 
-        $query =  'SELECT OXID FROM ' . $this->getCoreTableName() .
-                  ' WHERE OXARTICLEID=' . $db->quote($articleId) .
-                  ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
-                  ' AND   OXSHOPID=' . $db->quote($shopId);
+        // old query
+        // $query =  'SELECT OXID FROM ' . $this->getCoreTableName() .
+        //           ' WHERE OXARTICLEID=' . $db->quote($articleId) .
+        //           ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
+        //           ' AND   OXSHOPID=' . $db->quote($shopId);
 
-        $oxid = (string) $db->getOne($query);
+        $queryBuilder = Service::getInstance()->getQueryBuilder();
+        $oxid         = (string) $queryBuilder
+            ->select('OXID')
+            ->from($this->getCoreTableName())
+            ->where('OXARTICLEID = :articleId')
+            ->setParameter('articleId', $articleId)
+            ->andWhere('OXCOUNTRYID = :countryId')
+            ->setParameter('countryId', $countryId)
+            ->andWhere('OXSHOPID = :shopId')
+            ->setParameter('shopId', $shopId)
+            ->execute()
+            ->fetchOne()
+        ;
 
         return $this->load($oxid);
     }
 
     /**
-     * @return double | null
+     * @return null|float
      */
     public function getVat()
     {
@@ -50,7 +62,7 @@ class Product2CountryVat extends BaseModel
     }
 
     /**
-     * Gets field data
+     * Gets field data.
      *
      * @param string $fieldName name (eg. 'oxtitle') of a data field to get
      *
@@ -58,8 +70,8 @@ class Product2CountryVat extends BaseModel
      */
     public function getFieldData($fieldName)
     {
-        $longFieldName = $this->_getFieldLongName($fieldName);
+        $longFieldName = $this->getFieldLongName($fieldName);
 
-        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->value : null;
+        return ($this->{$longFieldName} instanceof Field) ? $this->{$longFieldName}->value : null;
     }
 }

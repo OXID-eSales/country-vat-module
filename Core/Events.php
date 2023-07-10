@@ -9,14 +9,14 @@ namespace OxidProfessionalServices\CountryVatAdministration\Core;
 class Events
 {
     /**
-     * Execute action on activate event
+     * Execute action on activate event.
      */
     public static function onActivate()
     {
-        $dbMetaDataHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
+        $connection   = Service::getInstance()->getDatabaseConnection();
+        $schema       = $connection->getSchemaManager();
 
-        if (!$dbMetaDataHandler->tableExists("oxps_country2vat")) {
-
+        if (!$schema->tablesExist(['oxps_country2vat'])) {
             $query = "CREATE TABLE `oxps_country2vat` (
                       `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
                       `OXCOUNTRYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'country id',
@@ -25,10 +25,10 @@ class Events
                       PRIMARY KEY (`OXID`),
                       UNIQUE KEY `OXCOUNTRYID` (`OXCOUNTRYID`,`OXSHOPID`)
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
+            $connection->executeStatement($query);
         }
 
-        if (!$dbMetaDataHandler->tableExists("oxpsarticle2countryvat")) {
+        if (!$schema->tablesExist(['oxpsarticle2countryvat'])) {
             $query = "CREATE TABLE `oxpsarticle2countryvat` (
                       `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
                       `OXARTICLEID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'article id',
@@ -38,10 +38,10 @@ class Events
                       PRIMARY KEY (`OXID`),
                       UNIQUE KEY `OXARTCOUNTRYID` (`OXARTICLEID`,`OXCOUNTRYID`,`OXSHOPID`)
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
+            $connection->executeStatement($query);
         }
 
-        if (!$dbMetaDataHandler->tableExists("oxpscategory2countryvat")) {
+        if (!$schema->tablesExist(['oxpscategory2countryvat'])) {
             $query = "CREATE TABLE `oxpscategory2countryvat` (
                       `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'id',
                       `OXCATEGORYID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'category id',
@@ -51,7 +51,7 @@ class Events
                       PRIMARY KEY (`OXID`),
                       UNIQUE KEY `OXCATCOUNTRYID` (`OXCATEGORYID`,`OXCOUNTRYID`,`OXSHOPID`)
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list';";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
+            $connection->executeStatement($query);
         }
     }
 }

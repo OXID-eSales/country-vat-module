@@ -1,0 +1,15 @@
+{% extends "@admin_twig/country_main.html.twig" %}
+
+{% block admin_country_main_form %}
+    {{ parent() }}
+
+    <tr><!-- Liefersperre Privatkunden -->
+        <td class="edittext">
+            <label for="oxps_countryvatadministration_country_vat">{{ translate({ ident: "OXPSCOUNTRYVATADMINISTRATION_COUNTRY_MAIN_VAT" }) }}</label>
+        </td>
+        <td class="edittext">
+            <input type="number" id="oxps_countryvatadministration_country_vat" name="editval[oxps_countryvatadministration_country_vat]" min="0" max="100" step="0.01" size="5" maxlength="11" value="{{ oView.configuredVat() }}">
+        </td>
+    </tr>
+{% endblock %}
+

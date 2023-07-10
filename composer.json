@@ -7,9 +7,10 @@
   "license": [
     "proprietary"
   ],
-  "version": "1.0.3",
+  "version": "1.0.5",
   "require": {
-    "php": ">=7.0"
+    "php": ">=8.0",
+    "oxid-esales/oxideshop-ce": "^7.0"
   },
   "extra": {
     "oxideshop": {
