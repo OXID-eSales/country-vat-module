@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -25,7 +26,7 @@ class Article extends Article_parent
 
         return parent::getCustomVAT();
     }
-    
+
     /**
      * get special vat for article user country
      *
@@ -64,7 +65,7 @@ class Article extends Article_parent
         $categoryIds = $this->getCategoryIds();
 
         $categoryVatRelation = oxNew(Category2CountryVat::class);
-        $categoryVatRelation->loadByFirstCategoryCountry($categoryIds,  $countryId);
+        $categoryVatRelation->loadByFirstCategoryCountry($categoryIds, $countryId);
 
         return $categoryVatRelation->getVat();
     }
@@ -83,7 +84,8 @@ class Article extends Article_parent
 
         //TODO: check if this can be fetched in one go
         //if we failed to find something, we might have a variant so check the parent
-        if (!$loaded && ($parentId = $this->getParentId())) {
+        $parentId = $this->getParentId();
+        if (!$loaded && $parentId) {
             $articleVatRelation->loadByProductCountry($parentId, $countryId);
         }
 
@@ -95,12 +97,8 @@ class Article extends Article_parent
      */
     public function getArticleUserVatCountryId()
     {
+        /** @var User $user */
         $user = $this->getArticleUser();
-
-        if (!$user) {
-            //bail out, we don't know the country
-            return null;
-        }
 
         return $user->getVatCountry();
     }

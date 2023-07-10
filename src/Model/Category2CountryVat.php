@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -34,21 +35,21 @@ class Category2CountryVat extends BaseModel
         }
 
         $shopId = EshopRegistry::getConfig()->getShopId();
-        $db = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $oDb = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
 
         $tmp = [];
         foreach ($categoryIds as $id) {
-            $tmp[] = $db->quote($id);
+            $tmp[] = $oDb->quote($id);
         }
         $queryPart = implode(',', $tmp);
 
-        $query =  'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
+        $query = 'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
                   ' WHERE OXCATEGORYID IN (' . $queryPart . ')' .
-                  ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
-                  ' AND   OXSHOPID=' . $db->quote($shopId) .
+                  ' AND   OXCOUNTRYID=' . $oDb->quote($countryId) .
+                  ' AND   OXSHOPID=' . $oDb->quote($shopId) .
                   ' ORDER BY FIELD (OXCATEGORYID, ' . $queryPart . ')';
 
-        $oxid = (string) $db->getOne($query);
+        $oxid = (string) $oDb->getOne($query);
 
         return $this->load($oxid);
     }
@@ -56,19 +57,5 @@ class Category2CountryVat extends BaseModel
     public function getVat()
     {
         return $this->getFieldData('vat');
-    }
-
-    /**
-     * Gets field data
-     *
-     * @param string $fieldName name (eg. 'oxtitle') of a data field to get
-     *
-     * @return mixed value of a data field
-     */
-    public function getFieldData($fieldName)
-    {
-        $longFieldName = $this->getFieldLongName($fieldName);
-
-        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->value : null;
     }
 }

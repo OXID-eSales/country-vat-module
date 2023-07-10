@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,24 +15,24 @@ class CountryMain extends CountryMain_parent
     public function save()
     {
         $params = Registry::getRequest()->getRequestParameter("editval");
-        $noProblemsWithCountryVatUpdate = true;
+        $countryVatUpdated = true;
         if (key_exists('oxps_countryvatadministration_country_vat', $params)) {
             $countryToVat = oxNew(Country2Vat::class);
             $oxcountryId = $this->getEditObjectId();
             $shopId = (int) Registry::getConfig()->getShopId();
             $countryToVat->loadFromCountryAndShopId($oxcountryId, $shopId);
-            $deleteVatConfiguration = (bool) (trim($params['oxps_countryvatadministration_country_vat']) == '');
 
-            if ($deleteVatConfiguration) {
-                $countryToVat->delete();
-            } else {
-                $vat = (float) $params['oxps_countryvatadministration_country_vat'];
-                $countryToVat->assign(['OXCOUNTRYID' => $oxcountryId, 'OXSHOPID' => $shopId, 'VAT' => $vat]);
-                $noProblemsWithCountryVatUpdate = $countryToVat->save();
+            if (trim($params['oxps_countryvatadministration_country_vat']) == '') {
+                $countryVatUpdated = $countryToVat->delete();
+
+                return $countryVatUpdated && parent::save();
             }
 
+            $vat = (float) $params['oxps_countryvatadministration_country_vat'];
+            $countryToVat->assign(['OXCOUNTRYID' => $oxcountryId, 'OXSHOPID' => $shopId, 'VAT' => $vat]);
+            $countryVatUpdated = $countryToVat->save();
         }
-        return $noProblemsWithCountryVatUpdate && parent::save();
+        return $countryVatUpdated && parent::save();
     }
 
     public function configuredVat()

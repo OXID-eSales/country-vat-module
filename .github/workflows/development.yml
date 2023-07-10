@@ -237,52 +237,6 @@ jobs:
             source/test-module/tests/reports/phpstan.report.json
             source/test-module/tests/reports/phpmd.report.json
 
-  unit_tests:
-    needs: [ install_shop_with_module ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Load current installation from cache
-        uses: actions/cache@v3
-        with:
-          fail-on-cache-miss: true
-          path: |
-            ./*
-          key: installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
-          restore-keys: |
-            installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
-            installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}
-
-      - name: Start containers
-        run: |
-          make up
-          sleep 2
-
-      - name: Run tests
-        run: |
-          docker-compose exec -T \
-            -e XDEBUG_MODE=coverage \
-            php php vendor/bin/phpunit \
-              -c /var/www/vendor/${{ env.PACKAGE_NAME }}/tests/phpunit.xml \
-              --testsuite=Unit \
-              --coverage-php=/var/www/unit.cov \
-              --coverage-text
-
-      - name: Upload log artifact
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: ModuleUnitTestsLog-${{ inputs.php }}-${{ inputs.mysql }}-${{ inputs.template_engine }}
-          path: |
-            source/unit.cov
-            source/source/log/oxideshop.log
-            data/php/logs/error_log.txt
-
-      - name: Stop containers
-        if: always()
-        run: |
-          make down
-          sleep 2
-
   integration_tests:
     needs: [ install_shop_with_module ]
     runs-on: ubuntu-latest
@@ -308,10 +262,11 @@ jobs:
           docker-compose exec -T \
             -e XDEBUG_MODE=coverage \
             php php vendor/bin/phpunit \
-              -c /var/www/vendor/${{ env.PACKAGE_NAME }}/tests/phpintegration.xml \
+              -c /var/www/vendor/${{ env.PACKAGE_NAME }}/tests/phpunit.xml \
               --testsuite=Integration \
               --bootstrap=/var/www/source/bootstrap.php \
               --coverage-php=/var/www/integration.cov \
+              --coverage-clover=/var/www/coverage.xml \
               --coverage-text
 
       - name: Upload log artifact
@@ -454,7 +409,7 @@ jobs:
           sleep 2
 
   prepare_coverage_results:
-    needs: [ unit_tests, integration_tests ]
+    needs: [ integration_tests ]
     if: ${{ always() && inputs.report_sonarcloud }}
     runs-on: ubuntu-latest
     steps:
@@ -468,12 +423,6 @@ jobs:
           restore-keys: |
             installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}-${{ github.run_attempt }}
             installation-${{ github.sha }}-${{ join(inputs.*, '-') }}-${{ github.run_number }}
-
-      - name: Download unit artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: ModuleUnitTestsLog-${{ inputs.php }}-${{ inputs.mysql }}-${{ inputs.template_engine }}
-          path: ./source/coverage/
 
       - name: Download integration artifacts
         uses: actions/download-artifact@v3
@@ -533,7 +482,7 @@ jobs:
             -Dsonar.cpd.php.minimumLines=5
 
   notify_slack:
-    needs: [ styles, unit_tests, integration_tests, codeception_smarty, codeception_twig ]
+    needs: [ styles, integration_tests, codeception_smarty, codeception_twig ]
     runs-on: ubuntu-latest
     if: ${{ always() && inputs.report_slack }}
     steps:
@@ -543,16 +492,15 @@ jobs:
           payload: >
             { "text": "
             ${{ github.event_name == 'workflow_dispatch' && 'Manual run of' || 'Scheduled run of' }} ${{ github.workflow }} on ${{ github.repository }} by ${{ github.actor }}
-            ${{ (needs.unit_tests.result=='success' && needs.integration_tests.result=='success') && 'Successful' || 'Failed' }}
+            ${{ (needs.integration_tests.result=='success') && 'Successful' || 'Failed' }}
             ", "blocks": [ { "type": "header","text": { "type": "plain_text", "emoji": true, "text": "
             ${{ github.event_name == 'workflow_dispatch' && 'Manual run of' || 'Scheduled' }} ${{ github.workflow }} on ${{ github.repository }} by ${{ github.actor }}
             " } },{ "type": "section","fields": [ { "type": "mrkdwn","text": "
-            *Status:* ${{ (needs.unit_tests.result=='success' && needs.integration_tests.result=='success') && ':white_check_mark:' || ':x:' }}
+            *Status:* ${{ (needs.integration_tests.result=='success') && ':white_check_mark:' || ':x:' }}
             " },{ "type": "mrkdwn","text": "
             Repository: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.repository }}/actions/runs/${{ github.run_id }}>
             " } ] },{ "type": "section", "text": { "type": "mrkdwn", "text": "
             \n* Module Styles ${{ (needs.styles.result=='success') && ':white_check_mark:' || ':x:' }}
-            \n* Module Unit ${{ (needs.unit_tests.result=='success') && ':white_check_mark:' || ':x:' }}
             \n* Module Integration ${{ (needs.integration_tests.result=='success') && ':white_check_mark:' || ':x:' }}
             \n* Module Codeception with Smarty ${{ ((inputs.template_engine=='smarty' && needs.codeception_smarty.result=='success') || (inputs.template_engine=='both' && needs.codeception_smarty.result=='success')) && ':white_check_mark:' || ':x:' }}
             \n* Module Codeception with Twig ${{ ((inputs.template_engine=='twig-apex' && needs.codeception_twig.result=='success') || (inputs.template_engine=='both' && needs.codeception_twig.result=='success')) && ':white_check_mark:' || ':x:' }}
