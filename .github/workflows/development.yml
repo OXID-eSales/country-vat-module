@@ -312,7 +312,7 @@ jobs:
           docker-compose exec -T php composer require oxid-esales/smarty-component:dev-b-7.0.x --no-update
           docker-compose exec -T php composer require oxid-esales/smarty-admin-theme:dev-b-7.0.x --no-update
           docker-compose exec -T php composer require oxid-esales/flow-theme:dev-b-7.0.x --no-update
-          docker-compose exec -T php composer require oxid-esales/codeception-page-objects:dev-b-7.0.x-SMARTY-OXDEV-7134 --no-update
+          docker-compose exec -T php composer require oxid-esales/codeception-page-objects:dev-b-7.0.x-SMARTY --no-update
           docker-compose exec -T php composer require oxid-esales/codeception-modules:dev-b-7.0.x --no-update
           docker-compose exec -T php composer update --no-interaction
 
@@ -375,7 +375,6 @@ jobs:
 
       - name: Install twig template engine and twig theme
         run: |
-          docker-compose exec -T php composer require oxid-esales/codeception-page-objects:dev-b-7.0.x-tests-OXDEV-7134 --no-update
           docker-compose exec -T php composer require oxid-esales/twig-component:dev-b-7.0.x --no-update
           docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --no-update
           docker-compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.0.x --no-update
