@@ -8,11 +8,14 @@ namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\ViewConfig;
 use OxidProfessionalServices\CountryVatAdministration\Core\Service;
+use OxidProfessionalServices\CountryVatAdministration\Model\AjaxContainer;
 use OxidProfessionalServices\CountryVatAdministration\Model\Product2CountryVat;
 
 class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
+  
     /**
      * Columns array.
      *
@@ -29,6 +32,11 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             ['oxcountryid', 'oxpsarticle2countryvat', 0, 0, 1],
         ],
     ];
+
+    public function getAjaxContainer(string $index, string $oxidKey = 'oxid') {
+        $data = AjaxContainer::buildFromColumns($this->_aColumns[$index] ?? []);
+        return AjaxContainer::getInstance($index, $data, Registry::get(ViewConfig::class)->getAjaxLink() . "cmpid={$index}&container=article_mainvat&{$oxidKey}=" . Registry::getRequest()->getRequestParameter('oxid'));
+    }
 
     /**
      * Removes article attributes.
@@ -149,3 +157,4 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         return $sQAdd;
     }
 }
+
