@@ -4,81 +4,74 @@
 {% include "popups/headitem.html.twig" with {title: "OXPSCOUNTRYVATADMINISTRATION_COUNTRY_MAIN_VAT"|translate} %}
 
     <script type="text/javascript">
-        initAoc = function()
-        {
-            var test = '';
-            try {
-                test = JSON.parse('{{ container1.encoded|raw}}');
-                console.debug('test', test);
-            } catch(e) {
-                console.error('error', e);
-            }
-            YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1', test, '{{ container1.getUri(oViewConf)|raw}}');
-                                                        
-    
-            {% set sSep = "" %}
-    
-            YAHOO.oxid.container2 = new YAHOO.oxid.aoc( 'container2',
-                                                        [ {% for iKey, aItem in oxajax.container2 %}
-                                                           {{ sSep }}{% apply spaceless %}{ key:'_{{ iKey }}', ident: {% if aItem.4 %}true{% else %}false{% endif %}
-                                                           {% if not aItem.4 %},
-                                                           label: '{{ translate({ ident: "GENERAL_AJAX_SORT_"|cat(aItem.0)|upper }) }}',
-                                                           visible: {% if aItem.2 %}true{% else %}false{% endif %},
-                                                           formatter: YAHOO.oxid.aoc.custFormatter
-                                                           {% endif %}}
-                                                          {% endapply %}
-                                                          {% set sSep = "," %}
-                                                          {% endfor %} ],
-                                                        '{{ oViewConf.getAjaxLink()|raw }}cmpid=container2&container=article_mainvat&oxid={{ oxid }}'
-                                                        )
-            YAHOO.oxid.container1.getDropAction = function()
+        try {
+            initAoc = function()
             {
-                return 'fnc=addattr';
-            }
+                let container1 = JSON.parse('{{ container1.encoded|raw}}'), 
+                    container2 = JSON.parse('{{ container2.encoded|raw}}');
+                let uri1 = '{{ container1.getUri(oViewConf)|raw}}',
+                    uri2 = '{{ container2.getUri(oViewConf)|raw}}';
 
-            YAHOO.oxid.container2.getDropAction = function()
-            {
-                return 'fnc=removeattr';
-            }
-            YAHOO.oxid.container2.subscribe( "rowClickEvent", function( oParam )
-            {
-                var aSelRows= YAHOO.oxid.container2.getSelectedRows();
-                if ( aSelRows.length ) {
-                    oParam = YAHOO.oxid.container2.getRecord(aSelRows[0]);
-                    $('_attrname').innerHTML = oParam._oData._0;
-                    $('attr_value').value    = oParam._oData._2;
-                    $('attr_oxid').value     = oParam._oData._3;
-                    $D.setStyle( $('arrt_conf'), 'visibility', '' );
-                } else {
-                    $D.setStyle( $('arrt_conf'), 'visibility', 'hidden' );
+                YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1', container1, uri1);
+                YAHOO.oxid.container2 = new YAHOO.oxid.aoc( 'container2', container2, uri2);
+             
+                YAHOO.oxid.container1.getDropAction = function()
+                {
+                    return 'fnc=addattr';
                 }
-            })
-            YAHOO.oxid.container2.subscribe( "dataReturnEvent", function()
-            {
-                $D.setStyle( $('arrt_conf'), 'visibility', 'hidden' );
-            })
-            YAHOO.oxid.container2.onSave = function()
-            {
-                YAHOO.oxid.container1.getDataSource().flushCache();
-                YAHOO.oxid.container1.getPage( 0 );
-                YAHOO.oxid.container2.getDataSource().flushCache();
-                YAHOO.oxid.container2.getPage( 0 );
-            }
-            YAHOO.oxid.container2.onFailure = function() { /* currently does nothing */ }
-            YAHOO.oxid.container2.saveAttribute = function()
-            {
-                var callback = {
-                    success: YAHOO.oxid.container2.onSave,
-                    failure: YAHOO.oxid.container2.onFailure,
-                    scope:   YAHOO.oxid.container2
-                };
-                YAHOO.util.Connect.asyncRequest( 'GET', '{{ oViewConf.getAjaxLink() }}&cmpid=container2&container=article_mainvat&fnc=saveAttributeValue&oxid={{ oxid }}&attr_value=' + encodeURIComponent( $('attr_value').value ) + '&attr_oxid=' + encodeURIComponent( $('attr_oxid').value ), callback );
 
+                YAHOO.oxid.container2.getDropAction = function()
+                {
+                    return 'fnc=removeattr';
+                }
+
+                YAHOO.oxid.container2.subscribe( "rowClickEvent", function( oParam )
+                {
+                    var aSelRows= YAHOO.oxid.container2.getSelectedRows();
+                    if ( aSelRows.length ) {
+                        oParam = YAHOO.oxid.container2.getRecord(aSelRows[0]);
+                        $('_attrname').innerHTML = oParam._oData._0;
+                        $('attr_value').value    = oParam._oData._2;
+                        $('attr_oxid').value     = oParam._oData._3;
+                        $D.setStyle( $('arrt_conf'), 'visibility', '' );
+                    } else {
+                        $D.setStyle( $('arrt_conf'), 'visibility', 'hidden' );
+                    }
+                })
+                YAHOO.oxid.container2.subscribe( "dataReturnEvent", function()
+                {
+                    $D.setStyle( $('arrt_conf'), 'visibility', 'hidden' );
+                })
+                YAHOO.oxid.container2.onSave = function()
+                {
+                    YAHOO.oxid.container1.getDataSource().flushCache();
+                    YAHOO.oxid.container1.getPage( 0 );
+                    YAHOO.oxid.container2.getDataSource().flushCache();
+                    YAHOO.oxid.container2.getPage( 0 );
+                }
+                YAHOO.oxid.container2.onFailure = function(e) { 
+                    alert('Something went wrong no callback, look into console for details.');
+                    console.error(e);
+                 }
+                YAHOO.oxid.container2.saveAttribute = function()
+                {
+                    var callback = {
+                        success: YAHOO.oxid.container2.onSave,
+                        failure: YAHOO.oxid.container2.onFailure,
+                        scope:   YAHOO.oxid.container2
+                    };
+                    const uri = '{{ oViewConf.getAjaxLink()|raw }}cmpid=container2&container=article_mainvat&fnc=saveAttributeValue&oxid={{ oxid }}&attr_value=' + encodeURIComponent( $('attr_value').value ) + '&attr_oxid=' + encodeURIComponent( $('attr_oxid').value );
+                    YAHOO.util.Connect.asyncRequest( 'GET', uri, callback );
+
+                }
+                // subscribint event listeners on buttons
+                $E.addListener( $('saveBtn'), "click", YAHOO.oxid.container2.saveAttribute, $('saveBtn') );
             }
-            // subscribint event listeners on buttons
-            $E.addListener( $('saveBtn'), "click", YAHOO.oxid.container2.saveAttribute, $('saveBtn') );
+            $E.onDOMReady( initAoc );
+        } catch( e ) {
+            alert('Something went wrong, look into console for details.');
+            console.error(e);
         }
-        $E.onDOMReady( initAoc );
     </script>
     
         <table width="100%">

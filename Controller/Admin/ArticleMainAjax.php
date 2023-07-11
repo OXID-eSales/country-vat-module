@@ -33,7 +33,7 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         ],
     ];
 
-    public function getAjaxContainer(string $index, string $oxidKey = 'oxid') {
+    public function getAjaxContainer(string $index, string $oxidKey = 'oxid'): AjaxContainer {
         $data = AjaxContainer::buildFromColumns($this->_aColumns[$index] ?? []);
         return AjaxContainer::getInstance($index, $data, Registry::get(ViewConfig::class)->getAjaxLink() . "cmpid={$index}&container=article_mainvat&{$oxidKey}=" . Registry::getRequest()->getRequestParameter('oxid'));
     }

@@ -8,7 +8,9 @@ namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ViewConfig;
 use OxidProfessionalServices\CountryVatAdministration\Core\Service;
+use OxidProfessionalServices\CountryVatAdministration\Model\AjaxContainer;
 use OxidProfessionalServices\CountryVatAdministration\Model\Category2CountryVat;
 
 class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
@@ -30,6 +32,11 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         ],
     ];
 
+    public function getAjaxContainer(string $index, string $oxidKey = 'oxid'): AjaxContainer {
+        $data = AjaxContainer::buildFromColumns($this->_aColumns[$index] ?? []);
+        return AjaxContainer::getInstance($index, $data, Registry::get(ViewConfig::class)->getAjaxLink() . "cmpid={$index}&container=category_mainvat&{$oxidKey}=" . Registry::getRequest()->getRequestParameter('oxid'));
+    }
+
     /**
      * Removes article attributes.
      */
@@ -39,13 +46,8 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         if (Registry::getRequest()->getRequestParameter('all')) {
             $sO2AViewName = $this->getViewName('oxpscategory2countryvat');
             $sQ           = $this->addFilter("delete {$sO2AViewName}.* " . $this->getQuery());
-            // \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
             Service::getInstance()->getDatabaseConnection()->executeStatement($sQ);
         } elseif ($aChosenArt && is_array($aChosenArt)) {
-            // old query:
-            // $sChosenArticles = implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
-            // $sQ              = "delete from oxpscategory2countryvat where oxpscategory2countryvat.oxid in ({$sChosenArticles}) ";
-            // \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
             Service::getInstance()->getQueryBuilder()
                 ->delete('oxpscategory2countryvat')
                 ->where('oxpscategory2countryvat.oxid IN (:chosenArticles)')

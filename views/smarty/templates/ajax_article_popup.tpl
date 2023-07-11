@@ -4,34 +4,14 @@
 <script type="text/javascript">
     initAoc = function()
     {
-        YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1',
-            [ [{foreach from=$oxajax.container1 item=aItem key=iKey}]
-                [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
-                    [{if !$aItem.4}],
-                label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
-                visible: [{if $aItem.2}]true[{else}]false[{/if}]
-                    [{/if}]}
-                [{/strip}]
-                [{assign var="sSep" value=","}]
-                [{/foreach}] ],
-            '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=article_mainvat&synchoxid=[{$oxid}]'
-        );
+        let container1 = JSON.parse('[{$container1->encoded}]'), 
+            container2 = JSON.parse('[{$container2->encoded}]');
+        let uri1 = '[{$container1->getUri($oViewConf)}]',
+            uri2 = '[{$container2->getUri($oViewConf)}]';
 
-        [{assign var="sSep" value=""}]
+        YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1', container1, uri1);
+        YAHOO.oxid.container2 = new YAHOO.oxid.aoc( 'container2', container2, uri2);
 
-        YAHOO.oxid.container2 = new YAHOO.oxid.aoc( 'container2',
-            [ [{foreach from=$oxajax.container2 item=aItem key=iKey}]
-                [{$sSep}][{strip}]{ key:'_[{$iKey}]', ident: [{if $aItem.4}]true[{else}]false[{/if}]
-                    [{if !$aItem.4}],
-                label: '[{oxmultilang ident="GENERAL_AJAX_SORT_"|cat:$aItem.0|oxupper}]',
-                visible: [{if $aItem.2}]true[{else}]false[{/if}],
-                formatter: YAHOO.oxid.aoc.custFormatter
-                    [{/if}]}
-                [{/strip}]
-                [{assign var="sSep" value=","}]
-                [{/foreach}] ],
-            '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=article_mainvat&oxid=[{$oxid}]'
-        )
         YAHOO.oxid.container1.getDropAction = function()
         {
             return 'fnc=addattr';
@@ -65,7 +45,10 @@
             YAHOO.oxid.container2.getDataSource().flushCache();
             YAHOO.oxid.container2.getPage( 0 );
         }
-        YAHOO.oxid.container2.onFailure = function() { /* currently does nothing */ }
+        YAHOO.oxid.container2.onFailure = function(e) { 
+            alert('Something went wrong no callback, look into console for details.');
+            console.error(e);
+        }
         YAHOO.oxid.container2.saveAttribute = function()
         {
             var callback = {
@@ -73,7 +56,8 @@
                 failure: YAHOO.oxid.container2.onFailure,
                 scope:   YAHOO.oxid.container2
             };
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=article_mainvat&fnc=saveAttributeValue&oxid=[{$oxid}]&attr_value=' + encodeURIComponent( $('attr_value').value ) + '&attr_oxid=' + encodeURIComponent( $('attr_oxid').value ), callback );
+            const uri = '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=article_mainvat&fnc=saveAttributeValue&oxid=[{$oxid}]&attr_value=' + encodeURIComponent( $('attr_value').value ) + '&attr_oxid=' + encodeURIComponent( $('attr_oxid').value;
+            YAHOO.util.Connect.asyncRequest( 'GET', uri), callback );
 
         }
         // subscribint event listeners on buttons
