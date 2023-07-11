@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.5] - 2023-07-10
 
 ### Changed
-- Updated to OXID 7.0.0
+- Updated to OXID 7.0.0 (smarty & twig)
+- Requires OXID 7.0.0 or higher & php 8.0 or higher
 
 ## [1.0.4] - Unreleased
 

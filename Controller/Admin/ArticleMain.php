@@ -20,8 +20,8 @@ class ArticleMain extends ArticleMain_parent
         $fromParent = parent::render();
 
         if (EshopRegistry::getRequest()->getRequestParameter('cvat')) {
-            $ajax                       = oxNew(ArticleMainAjax::class);
-            $this->_aViewData['oxajax'] = $ajax->getColumns();
+            $ajax                           = oxNew(ArticleMainAjax::class);
+            $this->_aViewData['oxajax']     = $ajax->getColumns();
             $this->_aViewData['container1'] = $ajax->getAjaxContainer('container1', 'synchoxid');
             $this->_aViewData['container2'] = $ajax->getAjaxContainer('container2');
 

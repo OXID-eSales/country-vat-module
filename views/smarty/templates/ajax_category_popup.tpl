@@ -6,8 +6,8 @@
     {
         let container1 = JSON.parse('[{$container1->encoded}]'), 
             container2 = JSON.parse('[{$container2->encoded}]');
-        let uri1 = '[{$container1->getUri(oViewConf)}]',
-            uri2 = '[{$container2->getUri(oViewConf)}]';
+        let uri1 = '[{$container1->getUri($oViewConf)}]',
+            uri2 = '[{$container2->getUri($oViewConf)}]';
 
         YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1', container1, uri1);
         YAHOO.oxid.container2 = new YAHOO.oxid.aoc( 'container2', container2, uri2);

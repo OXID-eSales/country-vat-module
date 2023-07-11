@@ -34,21 +34,7 @@ class Category2CountryVat extends BaseModel
         }
 
         $shopId = EshopRegistry::getConfig()->getShopId();
-        // $db     = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
-
-        // $tmp = [];
-        // foreach ($categoryIds as $id) {
-        //     $tmp[] = $db->quote($id);
-        // }
-        // $queryPart = implode(',', $tmp);
-
-        // $query =  'SELECT OXID, OXCATEGORYID FROM ' . $this->getCoreTableName() .
-        //           ' WHERE OXCATEGORYID IN (' . $queryPart . ')' .
-        //           ' AND   OXCOUNTRYID=' . $db->quote($countryId) .
-        //           ' AND   OXSHOPID=' . $db->quote($shopId) .
-        //           ' ORDER BY FIELD (OXCATEGORYID, ' . $queryPart . ')';
-
-        // $oxid = (string) $db->getOne($query);
+       
         $queryBuilder = Service::getInstance()->getQueryBuilder();
         $oxid         = (string) $queryBuilder
             ->select('OXID')

@@ -15,16 +15,16 @@ use OxidProfessionalServices\CountryVatAdministration\Model\Product2CountryVat;
 
 class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-  
     /**
      * Columns array.
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxtitle', 'oxcountry', 1, 1, 0],
-        ['oxid', 'oxcountry', 0, 0, 1],
-    ],
+    protected $_aColumns = [
+        'container1' => [ // field , table,         visible, multilanguage, ident
+            ['oxtitle', 'oxcountry', 1, 1, 0],
+            ['oxid', 'oxcountry', 0, 0, 1],
+        ],
         'container2' => [
             ['oxtitle', 'oxcountry', 1, 1, 0],
             ['oxid', 'oxpsarticle2countryvat', 0, 0, 1],
@@ -33,8 +33,10 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         ],
     ];
 
-    public function getAjaxContainer(string $index, string $oxidKey = 'oxid'): AjaxContainer {
+    public function getAjaxContainer(string $index, string $oxidKey = 'oxid'): AjaxContainer
+    {
         $data = AjaxContainer::buildFromColumns($this->_aColumns[$index] ?? []);
+
         return AjaxContainer::getInstance($index, $data, Registry::get(ViewConfig::class)->getAjaxLink() . "cmpid={$index}&container=article_mainvat&{$oxidKey}=" . Registry::getRequest()->getRequestParameter('oxid'));
     }
 
@@ -46,16 +48,12 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $aChosenArt = $this->getActionIds('oxpsarticle2countryvat.oxid');
         $request    = Registry::getRequest();
         if ($request->getRequestParameter('all')) {
-            /** @var Connection $connection */
             $connection   = Service::getInstance()->getDatabaseConnection();
             $sO2AViewName = $this->getViewName('oxpsarticle2countryvat');
             $sQ           = $this->addFilter("delete {$sO2AViewName}.* " . $this->getQuery());
             $connection->executeStatement($sQ);
         } elseif ($aChosenArt && is_array($aChosenArt)) {
             $queryBuilder = Service::getInstance()->getQueryBuilder();
-            // old query:
-            // $sChosenArticles = implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
-            // $sQ              = "delete from oxpsarticle2countryvat where oxpsarticle2countryvat.oxid in ({$sChosenArticles}) ";
             $queryBuilder
                 ->delete('oxpsarticle2countryvat')
                 ->where('oxpsarticle2countryvat.oxid IN (:chosenArticles)')
@@ -157,4 +155,3 @@ class ArticleMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         return $sQAdd;
     }
 }
-

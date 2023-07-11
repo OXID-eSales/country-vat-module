@@ -23,9 +23,7 @@ class Country2Vat extends BaseModel
     public function loadFromCountryAndShopId(string $countryId, int $shopId): bool
     {
         $queryBuilder = Service::getInstance()->getQueryBuilder();
-        // old query
-        // $oxid = (string) $db->getOne('SELECT OXID FROM ' . $this->getCoreTableName() . ' WHERE OXCOUNTRYID=' . $db->quote($countryId) . ' AND OXSHOPID=' . $db->quote($shopId));
-        $oxid = (string) $queryBuilder->select('OXID')
+        $oxid         = (string) $queryBuilder->select('OXID')
             ->from($this->getCoreTableName())
             ->where('OXCOUNTRYID = :countryId')
             ->setParameter('countryId', $countryId)

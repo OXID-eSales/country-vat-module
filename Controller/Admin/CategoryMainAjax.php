@@ -20,10 +20,11 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxtitle', 'oxcountry', 1, 1, 0],
-        ['oxid', 'oxcountry', 0, 0, 1],
-    ],
+    protected $_aColumns = [
+        'container1' => [ // field , table,         visible, multilanguage, ident
+            ['oxtitle', 'oxcountry', 1, 1, 0],
+            ['oxid', 'oxcountry', 0, 0, 1],
+        ],
         'container2' => [
             ['oxtitle', 'oxcountry', 1, 1, 0],
             ['oxid', 'oxpscategory2countryvat', 0, 0, 1],
@@ -32,8 +33,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         ],
     ];
 
-    public function getAjaxContainer(string $index, string $oxidKey = 'oxid'): AjaxContainer {
+    public function getAjaxContainer(string $index, string $oxidKey = 'oxid'): AjaxContainer
+    {
         $data = AjaxContainer::buildFromColumns($this->_aColumns[$index] ?? []);
+
         return AjaxContainer::getInstance($index, $data, Registry::get(ViewConfig::class)->getAjaxLink() . "cmpid={$index}&container=category_mainvat&{$oxidKey}=" . Registry::getRequest()->getRequestParameter('oxid'));
     }
 

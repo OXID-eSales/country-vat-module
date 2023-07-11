@@ -22,6 +22,7 @@ class Article extends Article_parent
         if (is_numeric($vat)) {
             return $vat;
         }
+
         return parent::getCustomVAT();
     }
 

@@ -5,6 +5,7 @@
  */
 
 namespace OxidProfessionalServices\CountryVatAdministration\Model;
+
 use OxidEsales\Eshop\Core\Registry;
 
 class User extends User_parent
