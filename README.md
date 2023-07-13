@@ -16,7 +16,7 @@ The priority of country specific VAT is product, category and country value
 ## Installation 
 
 ```
-composer require oxid-professional-services/countryvatadministration
+composer require oxid-esales/country-vat-module
 ```
 
 After requiring the module, you need to activate it, e.g. via OXID eShop admin.

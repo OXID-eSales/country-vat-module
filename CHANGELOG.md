@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Compatibility with twig engine (Twig related extensions in Twig directory)
 
 ### Changed
+- Package name changed from **oxid-professional-services/countryvatadministration** to **oxid-esales/country-vat-module**
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
 - Moved all php code to `src` directory
 
