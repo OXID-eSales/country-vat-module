@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidProfessionalServices\CountryVatAdministration\Tests\Codeception;
+namespace OxidEsales\CountryVat\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
@@ -127,7 +127,7 @@ final class UpdateVatAdminCest
     }
 
     /**
-     * @param \OxidProfessionalServices\CountryVatAdministration\Tests\Codeception\AcceptanceTester $I
+     * @param \OxidEsales\CountryVat\Tests\Codeception\AcceptanceTester $I
      * @param string $language
      * @return void
      */

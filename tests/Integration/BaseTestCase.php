@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration;
+namespace OxidEsales\CountryVat\Tests\Integration;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;

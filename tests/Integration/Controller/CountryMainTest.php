@@ -5,13 +5,13 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration\Controller;
+namespace OxidEsales\CountryVat\Tests\Integration\Controller;
 
 use OxidEsales\Eshop\Application\Controller\Admin\CountryMain;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidProfessionalServices\CountryVatAdministration\Model\Country2Vat;
-use OxidProfessionalServices\CountryVatAdministration\Tests\Integration\BaseTestCase;
+use OxidEsales\CountryVat\Model\Country2Vat;
+use OxidEsales\CountryVat\Tests\Integration\BaseTestCase;
 
 class CountryMainTest extends BaseTestCase
 {
@@ -20,7 +20,7 @@ class CountryMainTest extends BaseTestCase
         $_POST['editval'] = ['oxps_countryvatadministration_country_vat' => 10];
         $_POST['oxid'] = self::COUNTRY_ID_DE;
 
-        /** @var \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CountryMain $controller */
+        /** @var \OxidEsales\CountryVat\Controller\Admin\CountryMain $controller */
         $controller = oxNew(CountryMain::class);
         $controller->save();
 
@@ -42,7 +42,7 @@ class CountryMainTest extends BaseTestCase
         $_POST['editval'] = ['oxps_countryvatadministration_country_vat' => 11];
         $_POST['oxid'] = self::COUNTRY_ID_DE;
 
-        /** @var \OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CountryMain $controller */
+        /** @var \OxidEsales\CountryVat\Controller\Admin\CountryMain $controller */
         $controller = oxNew(CountryMain::class);
         $controller->save();
 

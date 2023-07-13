@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
+namespace OxidEsales\CountryVat\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax;
 use OxidEsales\Eshop\Application\Model\Article;
@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidProfessionalServices\CountryVatAdministration\Model\Product2CountryVat;
+use OxidEsales\CountryVat\Model\Product2CountryVat;
 
 class ArticleMainAjax extends ListComponentAjax
 {

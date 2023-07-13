@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidProfessionalServices\CountryVatAdministration\Model;
+namespace OxidEsales\CountryVat\Model;
 
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 

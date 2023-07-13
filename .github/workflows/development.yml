@@ -375,6 +375,7 @@ jobs:
 
       - name: Install twig template engine and twig theme
         run: |
+          docker-compose exec -T php composer require oxid-esales/codeception-page-objects:dev-b-7.0.x --no-update
           docker-compose exec -T php composer require oxid-esales/twig-component:dev-b-7.0.x --no-update
           docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --no-update
           docker-compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.0.x --no-update

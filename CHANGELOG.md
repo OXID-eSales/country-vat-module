@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Development workflows with test runners
 
 ### Changed
+- Package name changed from **oxid-professional-services/countryvatadministration** to **oxid-esales/country-vat-module**
 - Adapted module to work with OXID eShop 7.0.x
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
 - Moved all php code to `src` directory

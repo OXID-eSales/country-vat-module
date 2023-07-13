@@ -5,15 +5,15 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidProfessionalServices\CountryVatAdministration\Tests\Integration\Controller;
+namespace OxidEsales\CountryVat\Tests\Integration\Controller;
 
-use OxidProfessionalServices\CountryVatAdministration\Controller\Admin\ArticleMainAjax;
-use OxidProfessionalServices\CountryVatAdministration\Controller\Admin\CategoryMainAjax;
-use OxidProfessionalServices\CountryVatAdministration\Model\Article;
-use OxidProfessionalServices\CountryVatAdministration\Model\Category2CountryVat;
-use OxidProfessionalServices\CountryVatAdministration\Model\Product2CountryVat;
-use OxidProfessionalServices\CountryVatAdministration\Model\User;
-use OxidProfessionalServices\CountryVatAdministration\Tests\Integration\BaseTestCase;
+use OxidEsales\CountryVat\Controller\Admin\ArticleMainAjax;
+use OxidEsales\CountryVat\Controller\Admin\CategoryMainAjax;
+use OxidEsales\CountryVat\Model\Article;
+use OxidEsales\CountryVat\Model\Category2CountryVat;
+use OxidEsales\CountryVat\Model\Product2CountryVat;
+use OxidEsales\CountryVat\Model\User;
+use OxidEsales\CountryVat\Tests\Integration\BaseTestCase;
 
 class ArticleMainAjaxTest extends BaseTestCase
 {

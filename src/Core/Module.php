@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidProfessionalServices\CountryVatAdministration\Core;
+namespace OxidEsales\CountryVat\Core;
 
 final class Module
 {

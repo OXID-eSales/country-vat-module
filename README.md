@@ -25,7 +25,7 @@ the module will default to the VAT rate assigned specifically for the country.
 ## Installation 
 
 ```
-composer require oxid-professional-services/countryvatadministration
+composer require oxid-esales/country-vat-module
 ```
 
 After requiring the module, you need to activate it, e.g. via OXID eShop admin.

@@ -1,4 +1,4 @@
-namespace: OxidProfessionalServices\CountryVatAdministration\Tests\Codeception
+namespace: OxidEsales\CountryVat\Tests\Codeception
 
 params:
     - Codeception/Config/params.php

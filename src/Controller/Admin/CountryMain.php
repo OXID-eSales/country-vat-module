@@ -5,10 +5,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidProfessionalServices\CountryVatAdministration\Controller\Admin;
+namespace OxidEsales\CountryVat\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidProfessionalServices\CountryVatAdministration\Model\Country2Vat;
+use OxidEsales\CountryVat\Model\Country2Vat;
 
 class CountryMain extends CountryMain_parent
 {
