@@ -12,9 +12,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Integration and Codeception tests
 - Support for APEX theme
 - Development workflows with test runners
+- PHP 8.0 and 8.1 support
+- Support for MySQL 8
 
 ### Changed
 - Package name changed from **oxid-professional-services/countryvatadministration** to **oxid-esales/country-vat-module**
+- Namespaces changed from **OxidProfessionalServices\CountryVatAdministration** to **OxidEsales\CountryVat**
 - Adapted module to work with OXID eShop 7.0.x
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
 - Moved all php code to `src` directory

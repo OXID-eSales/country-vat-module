@@ -97,8 +97,13 @@ class Article extends Article_parent
      */
     public function getArticleUserVatCountryId()
     {
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->getArticleUser();
+
+        if (!$user) {
+            //bail out, we don't know the country
+            return null;
+        }
 
         return $user->getVatCountry();
     }
