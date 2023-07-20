@@ -1,5 +1,5 @@
 {
-  "name": "oxid-esales/country-vat-module",
+  "name": "oxid-professional-services/countryvatadministration",
   "description": "country vat administration",
   "type": "oxideshop-module",
   "keywords": ["oxid", "modules", "eShop"],
@@ -51,7 +51,7 @@
     "tests-integration": "XDEBUG_MODE=coverage vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=tests/ --testsuite=IntegrationTests",
     "tests-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --bootstrap=/var/www/source/bootstrap.php --config=tests/ --coverage-html=tests/result/coverage",
 
-    "tests-codeception": "(cd /var/www/ && THEME_ID=apex MODULE_IDS=oecountryvat /var/www/vendor/bin/codecept run acceptance -c /var/www/vendor/oxid-esales/country-vat-module/tests/codeception.yml -g oecountryvat)",
+    "tests-codeception": "(cd /var/www/ && THEME_ID=apex MODULE_IDS=oecountryvat /var/www/vendor/bin/codecept run acceptance -c /var/www/vendor/oxid-professional-services/countryvatadministration/tests/codeception.yml -g oecountryvat)",
 
     "tests-all": [
       "@tests-unit",

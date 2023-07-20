@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Support for MySQL 8
 
 ### Changed
-- Package name changed from **oxid-professional-services/countryvatadministration** to **oxid-esales/country-vat-module**
 - Namespaces changed from **OxidProfessionalServices\CountryVatAdministration** to **OxidEsales\CountryVat**
 - Adapted module to work with OXID eShop 7.0.x
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation

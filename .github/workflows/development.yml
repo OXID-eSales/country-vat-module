@@ -61,7 +61,7 @@ on:
         type: boolean
 
 env:
-  PACKAGE_NAME: 'oxid-esales/country-vat-module'
+  PACKAGE_NAME: 'oxid-professional-services/countryvatadministration'
   MODULE_ID: 'oecountryvat'
   SONARCLOUD_ORGANIZATION: 'oxid-esales'
   SONARCLOUD_PROJECT_KEY: 'OXID-eSales_country-vat-module'
