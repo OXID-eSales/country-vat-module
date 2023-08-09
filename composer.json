@@ -7,7 +7,7 @@
   "license": [
     "proprietary"
   ],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "prefer-stable": true,
   "prefer-dist": true,
   "minimum-stability": "dev",
