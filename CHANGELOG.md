@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.0.0] - 2023-08-09
+## [v2.0.0] - 2023-08-09
 
 ### Added
 - Migrations directory configured, queries from activation events moved to migrations
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Module id changed from **oxps/countryvatadministration** to **oecountryvat** for being compatible with shop documentation
 - Moved all php code to `src` directory
 
-## [1.0.4] - 2023-08-09
+## [v1.0.4] - 2023-08-09
 
 ### Changed
 - License updated - now using OXID Module and Component License
