@@ -7,7 +7,7 @@
   "license": [
     "proprietary"
   ],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "require": {
     "php": ">=7.0"
   },
