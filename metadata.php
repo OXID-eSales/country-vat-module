@@ -37,26 +37,5 @@ $aModule = [
     'events'       => [
         'onActivate'   => '\OxidEsales\CountryVat\Core\Events::onActivate',
     ],
-    'templates' => [
-        '@oecountryvat/admin/ajax_article_popup.tpl' => 'views/smarty/admin/ajax_article_popup.tpl',
-        '@oecountryvat/admin/ajax_category_popup.tpl' => 'views/smarty/admin/ajax_category_popup.tpl',
-    ],
-    'blocks'      => [
-        [
-            'template' => 'country_main.tpl',
-            'block'    => 'admin_country_main_form',
-            'file'     => 'views/smarty/blocks/admin/admin_country_main_form.tpl'
-        ],
-        [
-            'template' => 'article_main.tpl',
-            'block'    => 'admin_article_main_form',
-            'file'     => 'views/smarty/blocks/admin/admin_article_main_form.tpl'
-        ],
-        [
-            'template' => 'include/category_main_form.tpl',
-            'block'    => 'admin_category_main_form',
-            'file'     => 'views/smarty/blocks/admin/admin_category_main_form.tpl'
-        ],
-    ],
     'settings'    => [],
 ];
