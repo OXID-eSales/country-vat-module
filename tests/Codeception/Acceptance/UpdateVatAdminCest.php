@@ -7,11 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\CountryVat\Tests\Codeception;
+namespace OxidEsales\CountryVat\Tests\Codeception\Acceptance;
 
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Basket;
+use OxidEsales\CountryVat\Tests\Codeception\Support\AcceptanceTester;
 
 /**
  * @group oecountryvat
@@ -127,7 +128,7 @@ final class UpdateVatAdminCest
     }
 
     /**
-     * @param \OxidEsales\CountryVat\Tests\Codeception\AcceptanceTester $I
+     * @param \OxidEsales\CountryVat\Tests\Codeception\Support\AcceptanceTester $I
      * @param string $language
      * @return void
      */

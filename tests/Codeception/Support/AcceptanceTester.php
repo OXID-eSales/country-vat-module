@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\CountryVat\Tests\Codeception;
+namespace OxidEsales\CountryVat\Tests\Codeception\Support;
 
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\AdminLoginPage;

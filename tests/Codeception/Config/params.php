@@ -35,7 +35,7 @@ return [
 
 function getTestDataDumpFilePath(): string
 {
-    return Path::join(__DIR__, '/../', '_data', 'generated', 'dump.sql');
+    return Path::join(__DIR__, '/../', 'Support', 'Data', 'generated', 'dump.sql');
 }
 
 function getTestFixtureSqlFilePath(): string
@@ -47,7 +47,7 @@ function getTestFixtureSqlFilePath(): string
 
 function getModuleTestDataDumpFilePath()
 {
-    return Path::join(__DIR__, '/../', '_data', 'testdata.sql');
+    return Path::join(__DIR__, '/../', 'Support', 'Data', 'testdata.sql');
 }
 
 function getMysqlConfigPath()
