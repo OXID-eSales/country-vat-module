@@ -18,6 +18,7 @@ $aModule = [
     'id'          => Module::MODULE_ID,
     'title'       => 'Country VAT administration',
     'description' => '',
+    'thumbnail'   => 'logo.png',
     'version'     => '2.0.0',
     'author'      => 'OXID eSales AG',
     'url'         => 'https://www.oxid-esales.com/',
