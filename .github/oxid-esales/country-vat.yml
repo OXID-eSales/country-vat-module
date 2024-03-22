@@ -63,4 +63,3 @@ sonarcloud:
 
 finish:
   slack_title: 'Module {{ print $name }} ({{ .Github.RefName }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'
-
