@@ -9,7 +9,6 @@ on:
         options:
           - 7.1.x
           - 8.0.x
-          - use custom testplan
         default: '7.1.x'
         description: 'Choose test scenario'
       limit:
@@ -24,11 +23,6 @@ on:
           - 'PHP8.3/MySQL8.0'
         default: 'PHP8.1/MySQL5.7'
         description: 'Limit to one PHP/MySQL combination'
-      custom_testplan:
-        type: string
-        required: true
-        description: 'URL/PATH of the testplan to run'
-        default: '~/defaults/7.1.x.yml,~/country-vat.yml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'
@@ -71,10 +65,6 @@ jobs:
             "8.0.x")
               # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
               TESTPLAN="${LIMIT}~/country-vat.yml"
-              ;;
-            "use custom testplan")
-              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-              TESTPLAN="${{ inputs.custom_testplan }}"
               ;;
             *)
               echo "Illegal choice, fix the workflow"
