@@ -4,13 +4,6 @@ name: Manual trigger
 on:
   workflow_dispatch:
     inputs:
-      scenario:
-        type: choice
-        options:
-          - 7.1.x
-          - 8.0.x
-        default: '7.1.x'
-        description: 'Choose test scenario'
       limit:
         type: choice
         options:
@@ -48,20 +41,7 @@ jobs:
                exit 1
                ;;
           esac
-          case '${{ inputs.scenario}}' in
-            "7.1.x")
-              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-              TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/country-vat.yml"
-              ;;
-            "8.0.x")
-              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-              TESTPLAN="${LIMIT}~/country-vat.yml"
-              ;;
-            *)
-              echo "Illegal choice, fix the workflow"
-              exit 1
-              ;;
-          esac
+          TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/country-vat.yml"
           echo "testplan=${TESTPLAN}" | tee -a "${GITHUB_OUTPUT}"
 
   dispatch_stable:
