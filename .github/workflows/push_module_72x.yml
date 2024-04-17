@@ -1,16 +1,16 @@
-name: Auto trigger on PR to 7.1.x*
+name: Auto trigger on Push to 7.2.x*
 
 on:
-  pull_request:
+  push:
     branches:
-      - 'b-7.1.x**'
+      - 'b-7.2.x**'
 
 jobs:
-  pull_module:
+  push_module:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
-      testplan: '~/defaults/7.1.x.yml,~/country-vat.yml'
-      runs_on: '"ubuntu-latest"'
+      testplan: '~/defaults/7.2.x.yml,~/country-vat.yml'
+      runs_on: '"7.2.x"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
     secrets:
