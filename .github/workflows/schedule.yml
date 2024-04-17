@@ -9,7 +9,7 @@ jobs:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
       testplan: '~/defaults/7.1.x.yml,~/country-vat.yml'
-      runs_on: '["self-hosted", "x64"]'
+      runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
     secrets:
