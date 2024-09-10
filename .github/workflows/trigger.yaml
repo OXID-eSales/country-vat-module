@@ -1,16 +1,25 @@
 name: Auto trigger on Push to 7.2.x*
 
 on:
+  pull_request: {}
   push:
     branches:
       - 'b-7.2.x**'
 
 jobs:
+<<<<<<<< HEAD:.github/workflows/push_module_72x.yaml
   push_module:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yaml@v4
     with:
       testplan: '~/defaults/7.2.x.yaml,~/country-vat.yaml'
       runs_on: '"7.2.x"'
+========
+  php82_mysql80:
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
+    with:
+      testplan: '~/defaults/7.2.x.yaml,~/defaults/php8.2_mysql8.0_only.yaml,~/country-vat.yaml'
+      runs_on: '"ubuntu-latest"'
+>>>>>>>> 5dd5527 (OXDEV-8312 Switch GhA to light workflow):.github/workflows/trigger.yaml
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
     secrets:

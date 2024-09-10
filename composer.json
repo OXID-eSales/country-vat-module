@@ -47,11 +47,14 @@
       "@phpmd"
     ],
     
-    "tests-unit": "XDEBUG_MODE=coverage vendor/bin/phpunit --config=tests/ --testsuite=Unit",
-    "tests-integration": "XDEBUG_MODE=coverage vendor/bin/phpunit   --bootstrap=/var/www/source/bootstrap.php --config=tests/ --testsuite=Integration",
+    "tests-unit": "XDEBUG_MODE=coverage vendor/bin/phpunit --config=tests/ --testsuite=Unit --coverage-clover=tests/Reports/coverage_unit_country_vat.xml",
+    "tests-integration": "XDEBUG_MODE=coverage vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=tests/ --testsuite=Integration --coverage-clover=tests/Reports/coverage_integration_country_vat.xml",
     "tests-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --bootstrap=/var/www/source/bootstrap.php --config=tests/ --coverage-html=tests/result/coverage",
 
-    "tests-codeception": "(cd /var/www/ && THEME_ID=apex MODULE_IDS=oecountryvat /var/www/vendor/bin/codecept run Acceptance -c /var/www/vendor/oxid-professional-services/countryvatadministration/tests/codeception.yml -g oecountryvat)",
+    "tests-codeception": [
+      "Composer\\Config::disableProcessTimeout",
+      "THEME_ID=apex MODULE_IDS=oecountryvat SHOP_ROOT_PATH=/var/www vendor/bin/codecept run Acceptance -c tests/codeception.yml --no-redirect"
+    ],
 
     "tests-all": [
       "@tests-unit",
@@ -61,7 +64,7 @@
   },
   "config": {
     "allow-plugins": {
-      "oxid-esales/oxideshop-composer-plugin": true,
+      "oxid-esales/oxideshop-composer-plugin": false,
       "oxid-esales/oxideshop-unified-namespace-generator": true
     }
   }
