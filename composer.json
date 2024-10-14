@@ -11,17 +11,24 @@
   "prefer-dist": true,
   "minimum-stability": "dev",
   "require": {
-    "php": "^8.1"
+    "php": "^8.2"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10.63",
     "squizlabs/php_codesniffer": "3.9",
     "phpmd/phpmd": "^2.15",
     "oxid-esales/oxideshop-ce": "dev-b-7.2.x",
-    "phpunit/phpunit": "^10.4"
+    "phpunit/phpunit": "^10.4",
+    "codeception/codeception": "^5.0",
+    "codeception/module-asserts": "*",
+    "codeception/module-db": "*",
+    "codeception/module-filesystem": "*",
+    "codeception/module-webdriver": "*",
+    "oxid-esales/codeception-modules": "dev-b-7.2.x",
+    "oxid-esales/codeception-page-objects": "dev-b-7.2.x"
   },
   "conflict": {
-    "oxid-esales/oxideshop-ce": "<7.1"
+    "oxid-esales/oxideshop-ce": "<7.2"
   },
   "autoload": {
     "psr-4": {
