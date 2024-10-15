@@ -6,9 +6,9 @@ on:
 
 jobs:
   call_matrix:
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yaml@v4
     with:
-      testplan: '~/defaults/7.2.x.yml,~/country-vat.yml'
+      testplan: '~/defaults/7.2.x.yaml,~/country-vat.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
