@@ -25,7 +25,7 @@ class CountryMain extends CountryMain_parent
             if (trim($params['oxps_countryvatadministration_country_vat']) == '') {
                 $countryVatUpdated = $countryToVat->delete();
 
-                return $countryVatUpdated && parent::save();
+                return parent::save() && $countryVatUpdated;
             }
 
             $vat = (float) $params['oxps_countryvatadministration_country_vat'];
