@@ -8,6 +8,7 @@
 namespace OxidEsales\CountryVat\Tests\Integration\Controller;
 
 use OxidEsales\Eshop\Application\Controller\Admin\CountryMain;
+use OxidEsales\Eshop\Application\Model\Country;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\CountryVat\Model\Country2Vat;
@@ -48,5 +49,25 @@ class CountryMainTest extends BaseTestCase
 
         $country2Vat->loadFromCountryAndShopId(self::COUNTRY_ID_DE, Registry::getConfig()->getBaseShopId());
         $this->assertEquals('11', $country2Vat->oxps_country2vat__vat->value);
+    }
+
+    public function testUpdateExistingCountryWithoutSpecifyingVat()
+    {
+        $description = 'test_description';
+        $_POST['oxid'] = self::COUNTRY_ID_DE;
+        $_POST['editval'] = [
+            'oxps_countryvatadministration_country_vat' => '',
+            'oxcountry__oxlongdesc'                     => $description
+        ];
+
+        /** @var \OxidEsales\CountryVat\Controller\Admin\CountryMain $controller */
+        $controller = oxNew(CountryMain::class);
+        $controller->save();
+
+        $country = oxNew(Country::class);
+        $country->load(self::COUNTRY_ID_DE);
+
+        $this->assertSame(self::COUNTRY_ID_DE, $country->getFieldData('oxid'));
+        $this->assertSame($description, $country->getFieldData('oxcountry__oxlongdesc'));
     }
 }
