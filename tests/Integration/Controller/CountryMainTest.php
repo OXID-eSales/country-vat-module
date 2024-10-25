@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\CountryVat\Model\Country2Vat;
 use OxidEsales\CountryVat\Tests\Integration\BaseTestCase;
+use OxidEsales\Facts\Facts;
 
 class CountryMainTest extends BaseTestCase
 {
@@ -59,6 +60,11 @@ class CountryMainTest extends BaseTestCase
             'oxps_countryvatadministration_country_vat' => '',
             'oxcountry__oxlongdesc'                     => $description
         ];
+
+        $facts = new Facts();
+        if ($facts->getEdition() == 'EE') {
+            Registry::getConfig()->setConfigParam('blAllowSharedEdit', true);
+        }
 
         /** @var \OxidEsales\CountryVat\Controller\Admin\CountryMain $controller */
         $controller = oxNew(CountryMain::class);
