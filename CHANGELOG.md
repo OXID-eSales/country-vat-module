@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.2.0] - unreleased
+## [2.2.0-rc.2] - 2024-10-31
 
 ### Fixed
 - [0007733](https://bugs.oxid-esales.com/view.php?id=7733) No error feedback or auto fill or not required in for countries in backend
