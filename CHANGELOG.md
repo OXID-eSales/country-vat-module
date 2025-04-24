@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [undecided] - unreleased
+## [2.3.0-rc.1] - 2025-04-24
 
 ### Added
 - PHP 8.4 support
@@ -85,3 +85,16 @@ This is the stable release for v2.1.0. No changes have been made since v2.1.0-rc
 - Resolved conflict with other assignment overlays   
 - Country VAT assignment only for existing categories and products possible
 - It is possible to assign all countries at once now
+
+[2.3.0-rc.1]: https://github.com/OXID-eSales/country-vat-module/compare/v2.2.0...b-7.3.x
+[2.2.0]: https://github.com/OXID-eSales/country-vat-module/compare/v2.2.0-rc.2...v2.2.0
+[2.2.0-rc.2]: https://github.com/OXID-eSales/country-vat-module/compare/v2.2.0-rc.1...v2.2.0-rc.2
+[2.2.0-rc.1]: https://github.com/OXID-eSales/country-vat-module/compare/v2.1.0...v2.2.0-rc.1
+[v2.2.0]: https://github.com/OXID-eSales/country-vat-module/compare/v2.1.0...v2.2.0-rc.1
+[v2.1.0]: https://github.com/OXID-eSales/country-vat-module/compare/v2.1.0-rc.1...v2.1.0
+[v2.1.0-rc.1]: https://github.com/OXID-eSales/country-vat-module/compare/v2.0.0...v2.1.0-rc.1
+[v2.0.0]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.4...v2.0.0
+[v1.0.4]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.3...v1.0.4
+[v1.0.3]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.2...v1.0.3
+[v1.0.2]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.1...v1.0.2
+[v1.0.1]: https://github.com/OXID-eSales/country-vat-module/compare/v1.0.0...v1.0.1
