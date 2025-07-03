@@ -15,6 +15,7 @@ the module will default to the VAT rate assigned specifically for the country.
 
 ## Branch Compatibility
 
+* b-7.4.x branch is compatible with OXID eShop compilation b-7.4.x branch
 * b-7.3.x branch / v2.3.x is compatible with OXID eShop compilation b-7.3.x branch
 * b-7.2.x branch / v2.2.x is compatible with OXID eShop compilation b-7.2.x branch
 * b-7.1.x branch / v2.1.x is compatible with OXID eShop compilation b-7.1.x branch, works with `Twig engine` only
