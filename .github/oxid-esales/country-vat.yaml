@@ -1,16 +1,16 @@
-install_shop_with_modules:
+install:
   cache:
     prepared_shop: false
   composer:
     transform: |
       {
           "require": {
-              "oxid-esales/oxideshop-ce": "{{ .Data.global.composer.dev_ref }}",
-              "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
-              "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-              "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
-              "oxid-esales/developer-tools": "{{ .Data.global.composer.dev_ref }}",
-              "oxid-professional-services/countryvatadministration": "{{ .Data.global.composer.ref_name }}"
+              "oxid-esales/oxideshop-ce": "{{ .Data.install.composer.dev_ref }}",
+              "oxid-esales/twig-component": "{{ .Data.install.composer.dev_ref }}",
+              "oxid-esales/twig-admin-theme": "{{ .Data.install.composer.dev_ref }}",
+              "oxid-esales/apex-theme": "{{ .Data.install.composer.dev_ref }}",
+              "oxid-esales/developer-tools": "{{ .Data.install.composer.dev_ref }}",
+              "oxid-professional-services/countryvatadministration": "{{ .Data.install.composer.ref_name }}"
           },
           "repositories": {
             "oxid-professional-services/countryvatadministration": {
@@ -28,10 +28,10 @@ runscript: &runscript
   matrix:
     script: |
       [
-        "country_vat:tests-integration",
-        "country_vat:tests-codeception"
+        "oecountryvat:tests-integration",
+        "oecountryvat:tests-codeception"
       ]
-  country_vat:
+  oecountryvat:
     path: 'vendor/oxid-professional-services/countryvatadministration'
 
 runslim:
@@ -39,9 +39,9 @@ runslim:
   matrix:
     script: |
       [
-        "country_vat:phpcs",
-        "country_vat:phpstan",
-        "country_vat:phpmd"
+        "oecountryvat:phpcs",
+        "oecountryvat:phpstan",
+        "oecountryvat:phpmd"
       ]
 
 sonarcloud:
@@ -50,12 +50,12 @@ sonarcloud:
   strip_path: '/var/www/vendor/oxid-professional-services/countryvatadministration/'
   project_key: 'OXID-eSales_country-vat-module'
   project_name: 'oxid-professional-services/countryvatadministration'
-  parameters: |
-    -Dsonar.language=php \
-    -Dsonar.scm.provider=git \
-    -Dsonar.sources=src \
-    -Dsonar.tests=tests \
+  parameters: >
+    -Dsonar.language=php
+    -Dsonar.scm.provider=git
+    -Dsonar.sources=src
+    -Dsonar.tests=tests
     -Dsonar.php.phpstan.reportPaths=coverage-reports/phpstan.report.json
 
 finish:
-  slack_title: 'Country vat module ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
+  slack_title: 'Module Country VAT ({{ .Data.install.git.ref }}) by {{ .Github.Actor }}'
