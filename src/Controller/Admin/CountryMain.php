@@ -16,7 +16,7 @@ class CountryMain extends CountryMain_parent
     {
         $params = Registry::getRequest()->getRequestParameter("editval");
         $countryVatUpdated = true;
-        if (key_exists('oxps_countryvatadministration_country_vat', $params)) {
+        if (isset($params['oxps_countryvatadministration_country_vat'])) {
             $countryToVat = oxNew(Country2Vat::class);
             $oxcountryId = $this->getEditObjectId();
             $shopId = (int) Registry::getConfig()->getShopId();
